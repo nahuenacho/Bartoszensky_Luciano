@@ -135,7 +135,7 @@
         <Component class="javax.swing.JTable" name="jTable1">
           <Properties>
             <Property name="model" type="javax.swing.table.TableModel" editor="org.netbeans.modules.form.editors2.TableModelEditor">
-              <Table columnCount="17" rowCount="4">
+              <Table columnCount="23" rowCount="4">
                 <Column editable="false" title="Evento" type="java.lang.Object"/>
                 <Column editable="false" title="Reloj" type="java.lang.Object"/>
                 <Column editable="false" title="RND Cliente" type="java.lang.Object"/>
@@ -144,7 +144,8 @@
                 <Column editable="true" title="Fin Asignacion Cabina" type="java.lang.Object"/>
                 <Column editable="true" title="RND Llamada" type="java.lang.Object"/>
                 <Column editable="true" title="Tiempo Llamada" type="java.lang.Object"/>
-                <Column editable="true" title="Fin Llamada" type="java.lang.Object"/>
+                <Column editable="true" title="Fin Llamada C1" type="java.lang.Object"/>
+                <Column editable="true" title="Fin Llamada C2" type="java.lang.Object"/>
                 <Column editable="true" title="Fin Tiempo Cobro" type="java.lang.Object"/>
                 <Column editable="true" title="Estado Cabina 1" type="java.lang.Object"/>
                 <Column editable="true" title="Estado Cabina 2" type="java.lang.Object"/>
@@ -153,6 +154,11 @@
                 <Column editable="true" title="Cola Cobro Empleado" type="java.lang.Object"/>
                 <Column editable="true" title="Acumulador Cli Aten" type="java.lang.Object"/>
                 <Column editable="true" title="Acumulador Cli No Aten" type="java.lang.Object"/>
+                <Column editable="true" title="Tiempo llamada" type="java.lang.Object"/>
+                <Column editable="true" title="Acu Tiempo Llamada" type="java.lang.Object"/>
+                <Column editable="true" title="Ganancia" type="java.lang.Object"/>
+                <Column editable="true" title="Acu Ganancia" type="java.lang.Object"/>
+                <Column editable="true" title="Ganancia Neta" type="java.lang.Object"/>
               </Table>
             </Property>
           </Properties>
