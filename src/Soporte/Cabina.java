@@ -4,17 +4,18 @@ public class Cabina {
 
     private String c [];
     private Estado estado;
-    private long colaClientes;
+    private long colaAsignacion, colaCobro;
     private String estadoCabina, distribucion;
 
     public Cabina() {
         c = new String [2];
         estado = new Estado();
-        colaClientes = 0;
+        colaAsignacion = 0;
+        colaCobro = 0;
         // Para la Cabina 1 y 2 indica estado Libre
         c[1] = estado.estado(1, 0);
         c[2] = estado.estado(1, 0);
-        distribucion = "Exponencial Negativa con Media= 6";
+        distribucion = "Exponencial Negativa con Media 6";
     }
 
     public double aleatorio() {
@@ -86,12 +87,20 @@ public class Cabina {
         this.estado = estado;
     }
 
-    public long getColaClientes() {
-        return colaClientes;
+    public long getColaAsignacion() {
+        return colaAsignacion;
     }
 
-    public void setColaClientes(long colaClientes) {
-        this.colaClientes = colaClientes;
+    public void setColaAsignacion(long colaAsignacion) {
+        this.colaAsignacion = colaAsignacion;
+    }
+
+    public long getColaCobro() {
+        return colaCobro;
+    }
+
+    public void setColaCobro(long colaCobro) {
+        this.colaCobro = colaCobro;
     }
 
     public String getEstadoCabina() {
@@ -109,6 +118,6 @@ public class Cabina {
     public void setDistribucion(String distribucion) {
         this.distribucion = distribucion;
     }
-    
+
 
 }
