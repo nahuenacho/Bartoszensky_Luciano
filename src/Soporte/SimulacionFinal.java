@@ -14,31 +14,40 @@ public class SimulacionFinal {
     private Filas inicializacion;
     private int numeroCliente;
 
-    public SimulacionFinal(Cabina cabina, Empleado empleado, double reloj, double rndCliente, double tiempoEntreLlegada, double ProxLlegadaCliente, double finAsignacionCabina, double rndLlamada, double finLlamada1, double finLlamada2, double finCobro, double acuAtendidos, double acuNoAtendidos, double tiempoLlamada, double acuTiempoLlamada, double ganancia, double acuGanancia, double gananciaNeta, String evento, String estadoCabina1, String estadoCabina2, String estadoEmpleado, long colaAsginacionEmpleado, long colaCobroEmpleado, LinkedList clientesTemporales, LinkedList clientesColaCobro, LinkedList clientesColaAsignacion, LinkedList simulacion, Filas inicializacion, int numeroCliente) {
-        cabina = new Cabina();
-        empleado = new Empleado();
+    //cantSimulaciones = Cantidad de simulaciones a realizar
+    //mostarDesde = Mostrar desde la fila tanto
+    //mostrarHasta = Mostrar hasta la fila tanto
+    public SimulacionFinal(int cantSimulaciones, int mostrarDesde, int mostrarHasta) {
+
         reloj = 0.0;
+        evento = " - ";
         rndCliente = cabina.aleatorio();
         tiempoEntreLlegada = cabina.calcularTiempoLlegada(rndCliente);
         ProxLlegadaCliente = cabina.calcularProxLlegada(tiempoEntreLlegada, reloj);
         finAsignacionCabina = cabina.calcularFinAsignacionCabina(reloj);
+        //VER COMO HACER CON LAS LLAMADAS PORQUE TENGO 2 CABINAS
         rndLlamada = cabina.aleatorio();
         finLlamada1 = -1.0;
         finLlamada2 = -1.0;
+        tiempoLlamada = cabina.calcularTiempoLlamada(rndLlamada);
         finCobro = -1.0;
+        //Variables Estadisticas
         acuAtendidos = 0.0;
         acuNoAtendidos = 0.0;
-        tiempoLlamada = 0.0;
         acuTiempoLlamada = 0.0;
         ganancia = 0.0;
         acuGanancia = 0.0;
         gananciaNeta = 0.0;
-        evento = " - ";
+        //Asigno los estados a los Objetos(Permanente y Temporal)
         estadoCabina1 = cabina.getEstadoCabina();
         estadoCabina2 = cabina.getEstadoCabina();
         estadoEmpleado = empleado.getEstadoEmpleado();
+        //Asigno cola a cada Objeto
         colaAsginacionEmpleado = empleado.getColaAsgina();
         colaCobroEmpleado = empleado.getColaCobro();
+        //Creo los Objetos
+        cabina = new Cabina();
+        empleado = new Empleado();
         clientesTemporales = new LinkedList();
         clientesColaCobro = new LinkedList();
         clientesColaAsignacion = new LinkedList();
@@ -62,8 +71,8 @@ public class SimulacionFinal {
 
     //Cola máxima en caja.
     public int puntoB() {
-        int cola=0;
-        
+        int cola = 0;
+
         return cola;
 
     }
@@ -77,7 +86,7 @@ public class SimulacionFinal {
     //Total de dinero acumulado en caja.
     public double puntoD() {
 
-        Double pagar=0.0;
+        Double pagar = 0.0;
 
         if (tiempoLlamada <= 5) {
             pagar = 0.5;
@@ -85,9 +94,8 @@ public class SimulacionFinal {
         if (tiempoLlamada > 5) {
             pagar = (0.02 / 10) * 60;
         }
-        
+
         return pagar;
     }
-    
 
 }
