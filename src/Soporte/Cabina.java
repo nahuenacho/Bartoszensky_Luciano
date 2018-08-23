@@ -2,20 +2,16 @@ package Soporte;
 
 public class Cabina {
 
-    private String c [];
+    private String c[];
     private Estado estado;
-    private long colaAsignacion, colaCobro;
-    private String estadoCabina, distribucion;
+    private String estadoCabina;
 
     public Cabina() {
-        c = new String [2];
+        c = new String[2];
         estado = new Estado();
-        colaAsignacion = 0;
-        colaCobro = 0;
         // Para la Cabina 1 y 2 indica estado Libre
-        c[1] = estado.estado(1, 0);
-        c[2] = estado.estado(1, 0);
-        distribucion = "Exponencial Negativa con Media 6";
+        c[1] = estado.estado(0, 0);
+        c[2] = estado.estado(0, 0);
     }
 
     public double aleatorio() {
@@ -53,7 +49,7 @@ public class Cabina {
         tiempo = devolver / 100.0;
         return tiempo;
     }
-    
+
     // TIEMPO DE COBRO ES 0,25MIN SIEMPRE. MODIFICAR ACA PARA CAMBIAR EL VALOR
     public double calcularFinCobro(double horaActual) {
         Double tiempo = horaActual + 0.25;
@@ -62,7 +58,7 @@ public class Cabina {
         tiempo = devolver / 100.0;
         return tiempo;
     }
-    
+
     public double calcularFinAsignacionCabina(double horaActual) {
         Double tiempo = horaActual + 0.16;
         tiempo = tiempo * 100;
@@ -87,36 +83,12 @@ public class Cabina {
         this.estado = estado;
     }
 
-    public long getColaAsignacion() {
-        return colaAsignacion;
-    }
-
-    public void setColaAsignacion(long colaAsignacion) {
-        this.colaAsignacion = colaAsignacion;
-    }
-
-    public long getColaCobro() {
-        return colaCobro;
-    }
-
-    public void setColaCobro(long colaCobro) {
-        this.colaCobro = colaCobro;
-    }
-
     public String getEstadoCabina() {
         return estadoCabina;
     }
 
     public void setEstadoCabina(String estadoCabina) {
         this.estadoCabina = estadoCabina;
-    }
-
-    public String getDistribucion() {
-        return distribucion;
-    }
-
-    public void setDistribucion(String distribucion) {
-        this.distribucion = distribucion;
     }
 
 

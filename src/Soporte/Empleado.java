@@ -3,15 +3,13 @@ package Soporte;
 public class Empleado {
 
     private Estado estado;
-    private int colaAsgina;
-    private int colaCobro;
+    private int colaClientes;
     private String estadoEmpleado;
 
     public Empleado() {
         estado = new Estado();
         estadoEmpleado = estado.estado(2, 0); //Para el empleado estado Libre
-        colaAsgina = 0;
-        colaCobro = 0;
+        colaClientes = 0;
     }
 
     public Estado getEstado() {
@@ -22,20 +20,12 @@ public class Empleado {
         this.estado = estado;
     }
 
-    public int getColaAsgina() {
-        return colaAsgina;
+    public int getColaClientes() {
+        return colaClientes;
     }
 
-    public void setColaAsgina(int colaAsgina) {
-        this.colaAsgina = colaAsgina;
-    }
-
-    public int getColaCobro() {
-        return colaCobro;
-    }
-
-    public void setColaCobro(int colaCobro) {
-        this.colaCobro = colaCobro;
+    public void setColaClientes(int colaClientes) {
+        this.colaClientes = colaClientes;
     }
 
     public String getEstadoEmpleado() {
