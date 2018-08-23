@@ -25,7 +25,7 @@ public class Cabina {
         return rnd;
     }
 
-    //media es 6 en el enunciado
+    //EXPONENCIAL NEGATIVA MEDIA 6. MODIFICAR ACA PARA CAMBIAR EL VALOR DE LA DISTRIBUCION
     public double calcularTiempoLlegada(double random) {
         Double devolver = ((-6) * Math.log(1 - random));
         devolver = devolver * 100;
@@ -34,6 +34,7 @@ public class Cabina {
         return devolver;
     }
 
+    //Le paso el valor del reloj actual y le sumo el tiempo de TiempoLlegada
     public double calcularProxLlegada(double tiempo, double horaActual) {
         Double devolver = horaActual + tiempo;
         devolver = devolver * 100;
@@ -52,9 +53,17 @@ public class Cabina {
         return tiempo;
     }
     
-    //
-    public double calcularFinCobro(double tiempoCobro, double horaActual) {
-        Double tiempo = horaActual + tiempoCobro;
+    // TIEMPO DE COBRO ES 0,25MIN SIEMPRE. MODIFICAR ACA PARA CAMBIAR EL VALOR
+    public double calcularFinCobro(double horaActual) {
+        Double tiempo = horaActual + 0.25;
+        tiempo = tiempo * 100;
+        int devolver = tiempo.intValue();
+        tiempo = devolver / 100.0;
+        return tiempo;
+    }
+    
+    public double calcularFinAsignacionCabina(double horaActual) {
+        Double tiempo = horaActual + 0.16;
         tiempo = tiempo * 100;
         int devolver = tiempo.intValue();
         tiempo = devolver / 100.0;
