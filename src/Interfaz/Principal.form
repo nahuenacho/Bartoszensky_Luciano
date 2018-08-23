@@ -27,12 +27,6 @@
               <EmptySpace max="-2" attributes="0"/>
               <Group type="103" groupAlignment="0" attributes="0">
                   <Group type="102" attributes="0">
-                      <EmptySpace min="10" pref="10" max="-2" attributes="0"/>
-                      <Component id="botonSimular" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace min="-2" pref="38" max="-2" attributes="0"/>
-                      <Component id="botonEnunciado" min="-2" max="-2" attributes="0"/>
-                  </Group>
-                  <Group type="102" attributes="0">
                       <Component id="jLabel1" min="-2" max="-2" attributes="0"/>
                       <EmptySpace max="-2" attributes="0"/>
                       <Component id="txt_CantSimulaciones" min="-2" pref="30" max="-2" attributes="0"/>
@@ -45,8 +39,25 @@
                       <EmptySpace max="-2" attributes="0"/>
                       <Component id="txt_MostrarHasta" min="-2" pref="30" max="-2" attributes="0"/>
                   </Group>
+                  <Group type="102" alignment="0" attributes="0">
+                      <EmptySpace min="10" pref="10" max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="0" attributes="0">
+                          <Component id="jScrollPane1" pref="901" max="32767" attributes="0"/>
+                          <Group type="102" attributes="0">
+                              <Group type="103" groupAlignment="0" attributes="0">
+                                  <Component id="jScrollPane3" min="-2" max="-2" attributes="0"/>
+                                  <Group type="102" attributes="0">
+                                      <Component id="botonSimular" min="-2" max="-2" attributes="0"/>
+                                      <EmptySpace min="-2" pref="38" max="-2" attributes="0"/>
+                                      <Component id="botonEnunciado" min="-2" max="-2" attributes="0"/>
+                                  </Group>
+                              </Group>
+                              <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
+                          </Group>
+                      </Group>
+                  </Group>
               </Group>
-              <EmptySpace max="32767" attributes="0"/>
+              <EmptySpace max="-2" attributes="0"/>
           </Group>
       </Group>
     </DimensionLayout>
@@ -68,6 +79,10 @@
                   <Component id="botonEnunciado" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
               <EmptySpace max="32767" attributes="0"/>
+              <Component id="jScrollPane1" min="-2" pref="76" max="-2" attributes="0"/>
+              <EmptySpace type="separate" max="-2" attributes="0"/>
+              <Component id="jScrollPane3" min="-2" pref="87" max="-2" attributes="0"/>
+              <EmptySpace min="-2" pref="351" max="-2" attributes="0"/>
           </Group>
       </Group>
     </DimensionLayout>
@@ -110,5 +125,57 @@
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="botonEnunciadoActionPerformed"/>
       </Events>
     </Component>
+    <Container class="javax.swing.JScrollPane" name="jScrollPane1">
+      <AuxValues>
+        <AuxValue name="autoScrollPane" type="java.lang.Boolean" value="true"/>
+      </AuxValues>
+
+      <Layout class="org.netbeans.modules.form.compat2.layouts.support.JScrollPaneSupportLayout"/>
+      <SubComponents>
+        <Component class="javax.swing.JTable" name="jTable1">
+          <Properties>
+            <Property name="model" type="javax.swing.table.TableModel" editor="org.netbeans.modules.form.editors2.TableModelEditor">
+              <Table columnCount="15" rowCount="4">
+                <Column editable="false" title="Evento" type="java.lang.Object"/>
+                <Column editable="false" title="Reloj" type="java.lang.Object"/>
+                <Column editable="false" title="RND Cliente" type="java.lang.Object"/>
+                <Column editable="false" title="Tiempo entre Llegada" type="java.lang.Object"/>
+                <Column editable="true" title="Prox Llegada Cliente" type="java.lang.Object"/>
+                <Column editable="true" title="Fin Asignacion Cabina" type="java.lang.Object"/>
+                <Column editable="true" title="RND Llamada" type="java.lang.Object"/>
+                <Column editable="true" title="Tiempo Llamada" type="java.lang.Object"/>
+                <Column editable="true" title="Fin Llamada" type="java.lang.Object"/>
+                <Column editable="true" title="Fin Tiempo Cobro" type="java.lang.Object"/>
+                <Column editable="true" title="Estado Cabina 1" type="java.lang.Object"/>
+                <Column editable="true" title="Estado Cabina 2" type="java.lang.Object"/>
+                <Column editable="true" title="Estado Empleado" type="java.lang.Object"/>
+                <Column editable="true" title="Cola Asginacion Empleado" type="java.lang.Object"/>
+                <Column editable="true" title="Cola Cobro Empleado" type="java.lang.Object"/>
+              </Table>
+            </Property>
+          </Properties>
+        </Component>
+      </SubComponents>
+    </Container>
+    <Container class="javax.swing.JScrollPane" name="jScrollPane3">
+      <AuxValues>
+        <AuxValue name="autoScrollPane" type="java.lang.Boolean" value="true"/>
+      </AuxValues>
+
+      <Layout class="org.netbeans.modules.form.compat2.layouts.support.JScrollPaneSupportLayout"/>
+      <SubComponents>
+        <Component class="javax.swing.JTable" name="jTable3">
+          <Properties>
+            <Property name="model" type="javax.swing.table.TableModel" editor="org.netbeans.modules.form.editors2.TableModelEditor">
+              <Table columnCount="3" rowCount="4">
+                <Column editable="true" title="ID Cliente" type="java.lang.Object"/>
+                <Column editable="true" title="Estado" type="java.lang.Object"/>
+                <Column editable="true" title="Hora Llegada" type="java.lang.Object"/>
+              </Table>
+            </Property>
+          </Properties>
+        </Component>
+      </SubComponents>
+    </Container>
   </SubComponents>
 </Form>
