@@ -4,13 +4,13 @@ import java.util.LinkedList;
 
 public class Filas {
     //Variables a utilizar
-    private double reloj, rndCliente, tiempoEntreLlegada, proxLlegadaCliente, finAsignacionCabina, rndLlamada, finLlamada1, finLlamada2,finCobro;
-    private double acuAtendidos, acuNoAtendidos, tiempoLlamada, acuTiempoLlamada,ganancia, acuGanancia, gananciaNeta;
+    private double reloj, rndCliente, tiempoEntreLlegada, proxLlegadaCliente, finAsignacionCabina, rndLlamada,tiempoLlamada, finLlamada1, finLlamada2,finCobro;
+    private double acuAtendidos, acuNoAtendidos, acuTiempoLlamada,ganancia, acuGanancia, gananciaNeta;
     private String evento, estadoCabina1, estadoCabina2, estadoEmpleado;
     private long colaCliente;
     private LinkedList clientesTemporales, clientesCaja;
 
-    public Filas(String evento, double reloj, double rndCliente, double tiempoEntreLlegada, double proxLlegadaCliente, double finAsignacionCabina, double rndLlamada, double finLlamada1, double finLlamada2, double finCobro, String estadoCabina1, String estadoCabina2, String estadoEmpleado, long colaCliente, double acuAtendidos, double acuNoAtendidos, double tiempoLlamada, double acuTiempoLlamada, double ganancia, double acuGanancia, double gananciaNeta, LinkedList clientesTemporales, LinkedList clientesCaja) {
+    public Filas(String evento, double reloj, double rndCliente, double tiempoEntreLlegada, double proxLlegadaCliente, double finAsignacionCabina, double rndLlamada,double tiempoLlamada, double finLlamada1, double finLlamada2, double finCobro, String estadoCabina1, String estadoCabina2, String estadoEmpleado, long colaCliente, double acuAtendidos, double acuNoAtendidos, double acuTiempoLlamada, double ganancia, double acuGanancia, double gananciaNeta, LinkedList clientesTemporales, LinkedList clientesCaja) {
         this.reloj = reloj;
         this.rndCliente = rndCliente;
         this.tiempoEntreLlegada = tiempoEntreLlegada;
