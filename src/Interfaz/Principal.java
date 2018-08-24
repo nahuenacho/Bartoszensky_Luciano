@@ -13,16 +13,23 @@ public class Principal extends javax.swing.JFrame {
     //Variables
     private Cabina cabina;
     private Empleado empleado;
-    private double reloj, rndCliente, tiempoEntreLlegada, proxLlegadaCliente, finAsignacionCabina, rndLlamada, finLlamada1, finLlamada2, finCobro;
-    private double acuAtendidos, acuNoAtendidos, tiempoLlamada, acuTiempoLlamada, ganancia, acuGanancia, gananciaNeta;
+    private double reloj, rndCliente, tiempoEntreLlegada, proxLlegadaCliente, finAsignacionCabina, rndLlamada, inicioLlamadaC1, inicioLlamadaC2,finLlamada1, finLlamada2, finCobro;
+    private double acuAtendidos, acuNoAtendidos, tiempoLlamada, acuTiempoLlamada, acuPerdida, acuGanancia, gananciaNeta;
     private String evento, estadoCabina1, estadoCabina2, estadoEmpleado;
-    private long colaCliente;
-    private LinkedList clientesTemporales, clientesCaja, simulacion;
-    private Filas inicializacion;
+    private long colaCaja, colaMaxima;
+    private boolean esperaCabina;
+    private LinkedList<Clientes> clientesTemporales, clientesCaja, clientesCabina;
+    private LinkedList simulacion;
+    
     private int numeroCliente;
+    
+
+    private Filas inicializacion;
     DefaultTableModel modelo1 = new DefaultTableModel();
     DefaultTableModel modelo2 = new DefaultTableModel();
-
+    
+    
+    
     public Principal() {
         initComponents();
     }
@@ -266,47 +273,61 @@ public class Principal extends javax.swing.JFrame {
         resultado[5] = "Ganancia neta considerando el costo de perder clientes:  " +"$";
         JOptionPane.showMessageDialog(null, resultado);
     }//GEN-LAST:event_txt_InformeActionPerformed
-/*
+
     public void SimulacionFinal(int cantSimulaciones, int mostrarDesde, int mostrarHasta)
     {
+        //Variables de cajas
         cabina = new Cabina();
         empleado = new Empleado();
+        
+        //Variables del constructor fila
+        evento = " - ";
         reloj = 0.0;
         rndCliente = cabina.aleatorio();
         tiempoEntreLlegada = cabina.calcularTiempoLlegada(rndCliente);
         proxLlegadaCliente = cabina.calcularProxLlegada(tiempoEntreLlegada, reloj);
-        finAsignacionCabina = cabina.calcularFinAsignacionCabina(reloj);
-        rndLlamada = cabina.aleatorio();
+        finAsignacionCabina = -1.0;
+        rndLlamada = -1.0;
+        tiempoLlamada = -1.0;
+        inicioLlamadaC1 = -1.0;
         finLlamada1 = -1.0;
+        inicioLlamadaC2 = -1.0;
         finLlamada2 = -1.0;
         finCobro = -1.0;
+        estadoCabina1 = cabina.getEstadoCabina(0);
+        estadoCabina2 = cabina.getEstadoCabina(1);
+        estadoEmpleado = empleado.getEstadoEmpleado();
+        esperaCabina = false;
+        colaCaja = 0;
         acuAtendidos = 0.0;
         acuNoAtendidos = 0.0;
-        tiempoLlamada = 0.0;
+        colaMaxima = 0;
         acuTiempoLlamada = 0.0;
-        ganancia = 0.0;
         acuGanancia = 0.0;
+        acuPerdida = 0.0;
         gananciaNeta = 0.0;
-        evento = " - ";
-        estadoCabina1 = cabina.getEstadoCabina();
-        estadoCabina2 = cabina.getEstadoCabina();
-        estadoEmpleado = empleado.getEstadoEmpleado();
+        
+        
+        //Clientes
         clientesCaja = new LinkedList();
         clientesTemporales = new LinkedList();
+        clientesCabina = new LinkedList();
         simulacion = new LinkedList();
-        inicializacion = new Filas(evento,  reloj,  rndCliente,  tiempoEntreLlegada,  proxLlegadaCliente,  finAsignacionCabina,  rndLlamada, tiempoLlamada,  finLlamada1,  finLlamada2,  finCobro,  estadoCabina1,  estadoCabina2,  estadoEmpleado,  colaCliente,  acuAtendidos,  acuNoAtendidos,  acuTiempoLlamada,  ganancia,  acuGanancia,  gananciaNeta,  clientesTemporales,  clientesCaja);
+        
+        //Simulacion
+        inicializacion = new Filas(evento,  reloj,  rndCliente,  tiempoEntreLlegada,  proxLlegadaCliente,  finAsignacionCabina,  rndLlamada, tiempoLlamada, inicioLlamadaC1, finLlamada1, inicioLlamadaC2, finLlamada2,  finCobro,  estadoCabina1,  estadoCabina2,  estadoEmpleado, esperaCabina, colaCaja, acuAtendidos, acuNoAtendidos, colaMaxima, acuTiempoLlamada, acuGanancia,  acuPerdida,  gananciaNeta, clientesTemporales,  clientesCaja, clientesCabina);
         simulacion.add(inicializacion);
         
         if(mostrarDesde == 0)
         {
-            this.imprimirFila( evento,  reloj,  rndCliente,  tiempoEntreLlegada,  proxLlegadaCliente,  finAsignacionCabina,  rndLlamada, tiempoLlamada,  finLlamada1,  finLlamada2,  finCobro,  estadoCabina1,  estadoCabina2,  estadoEmpleado,  colaCliente,  acuAtendidos,  acuNoAtendidos,  acuTiempoLlamada,  ganancia,  acuGanancia,  gananciaNeta,clientesTemporales,clientesCaja);
+            this.imprimirFila(evento,  reloj,  rndCliente,  tiempoEntreLlegada,  proxLlegadaCliente,  finAsignacionCabina,  rndLlamada, tiempoLlamada, inicioLlamadaC1, finLlamada1, inicioLlamadaC2, finLlamada2,  finCobro,  estadoCabina1,  estadoCabina2,  estadoEmpleado,  esperaCabina, colaCaja,  acuAtendidos,  acuNoAtendidos, colaMaxima, acuTiempoLlamada,  acuGanancia,  acuPerdida, gananciaNeta, clientesTemporales,clientesCaja, clientesCabina);
         }
     }
     
     //FALTA MODIFICAR
-    public void imprimirFila(String evento, double reloj, double rndCliente, double tiempoEntreLlegada, double proxLlegadaCliente, double finAsignacionCabina, double rndLlamada,double tiempoLlamada, double finLlamada1, double finLlamada2, double finCobro, String estadoCabina1, String estadoCabina2, String estadoEmpleado, long colaCliente, double acuAtendidos, double acuNoAtendidos, double acuTiempoLlamada, double ganancia, double acuGanancia, double gananciaNeta, LinkedList clientesTemporales, LinkedList clientesCaja){
+    public void imprimirFila(String evento, double reloj, double rndCliente, double tiempoEntreLlegada, double proxLlegadaCliente, double finAsignacionCabina, double rndLlamada, double tiempoLlamada, double inicioLlamadaC1, double finLlamada1, double inicioLlamadaC2, double finLlamada2, double finCobro, String estadoCabina1, String estadoCabina2, String estadoEmpleado, boolean esperaCabina, long colaCaja, double acuAtendidos, double acuNoAtendidos, long colaMaxima, double acuTiempoLlamada, double acuGanancia, double acuPerdida, double gananciaNeta, LinkedList clientesTemporales, LinkedList clientesCaja, LinkedList clientesAsignacion){
      
-         Object[] fila = new Object[22];
+         Object[] fila = new Object[25];
         fila[0] = evento;
         fila[1] = reloj;
         
@@ -334,30 +355,40 @@ public class Principal extends javax.swing.JFrame {
         {fila[7] = " - ";}
         else{fila[7] = tiempoLlamada;}
         
-        if(finLlamada1 < 0)
+        if(inicioLlamadaC1 < 0)
         {fila[8] = " - ";}
-        else{fila[8]= finLlamada1;}
+        else{fila[8] = inicioLlamadaC1;}
+        
+        if(finLlamada1 < 0)
+        {fila[9] = " - ";}
+        else{fila[9]= finLlamada1;}
+        
+        if(inicioLlamadaC2 < 0)
+        {fila[10] = " - ";}
+        else{fila[10] = inicioLlamadaC2;}
         
         if(finLlamada2 < 0)
-        {fila[9] = " - ";}
-        else{fila[9] = finLlamada2;}
+        {fila[11] = " - ";}
+        else{fila[11] = finLlamada2;}
         
         if(finCobro < 0)
-        {fila[10] = " - ";}
-        else{fila[10] = finCobro;}
-               
-        fila[11] = this.estadoCabina1;
-        fila[12] = this.estadoCabina2;
-        fila[13] = estadoEmpleado;
-        fila[14] = this.colaCliente;
-        fila[15] = this.acuAtendidos;
-        fila[16] = this.acuNoAtendidos;
-        fila[17] = this.tiempoLlamada;
-        fila[18] = this.acuTiempoLlamada;
-        fila[19] = this.ganancia;
-        fila[20] = this.acuGanancia;
-        fila[21] = this.gananciaNeta;
-        fila[22] = this.tiempoLlamada;
+        {fila[12] = " - ";}
+        else{fila[12] = finCobro;}
+        
+        fila[13] = estadoCabina1;
+        fila[14] = estadoCabina2;
+        fila[15] = estadoEmpleado;
+        if(esperaCabina == true)
+        {fila[16] = " SI ";}
+        else {fila[16] = " NO ";}
+        fila[17] = colaCaja;
+        fila[18] = acuAtendidos;
+        fila[19] = acuNoAtendidos;
+        fila[20] = colaMaxima;
+        fila[21] = acuTiempoLlamada;
+        fila[22] = acuGanancia;
+        fila[23] = acuPerdida;
+        fila[24] = gananciaNeta;
         modelo1.addRow(fila);
         
         //Para la tabla de clientes
@@ -365,7 +396,7 @@ public class Principal extends javax.swing.JFrame {
         {
             for(int i = 0; i < clientesCaja.size(); i++)
             {
-                Object [] clientesImprimir = new Object[3];
+                Object [] clientesImprimir = new Object[4];
                 
                 //Imprimir Reloj
                 if(i == 0)
@@ -373,6 +404,7 @@ public class Principal extends javax.swing.JFrame {
                     clientesImprimir[0] = reloj;
                     clientesImprimir[1] = "";
                     clientesImprimir[2] = "";
+                    clientesImprimir[3] = "";
                     modelo2.addRow(clientesImprimir);
                 }
 
@@ -381,7 +413,7 @@ public class Principal extends javax.swing.JFrame {
 
                 Clientes c = (Clientes) clientesCaja.get(i);
                 clientesImprimir[0] = c.getId();
-                clientesImprimir[1] = c.estado();
+                //clientesImprimir[1] = c.estado();
                 if(c.getHoraInicioLlamada() < 0)
                 {clientesImprimir[2] = " - ";}
                 else{clientesImprimir[2] = c.getHoraInicioLlamada();}
@@ -410,7 +442,7 @@ public class Principal extends javax.swing.JFrame {
             
         }
     }
-    
+    /*
     //FALTA MODIFICAR
     public void simular(int desde, int hasta)
     {
@@ -615,7 +647,7 @@ public class Principal extends javax.swing.JFrame {
             }
             t++;
         }
-    }
+    }*/
     
     public double truncador(double valorATruncar)
     {
@@ -625,7 +657,7 @@ public class Principal extends javax.swing.JFrame {
         aTruncar = truncado / 100.0;
         return aTruncar;
     }
-    */
+    
     public static void main(String args[]) {
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
