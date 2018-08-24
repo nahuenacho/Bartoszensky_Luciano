@@ -4,14 +4,15 @@ public class Cabina {
 
     private String c[];
     private Estado estado;
-    private String estadoCabina;
+    //private String estadoCabina;
 
     public Cabina() {
         c = new String[2];
+        // Para poder asignar estados
         estado = new Estado();
-        // Para la Cabina 1 y 2 indica estado Libre
+        // Para iniciar la Cabina 1 y 2 con estado Libre
+        c[0] = estado.estado(0, 0);
         c[1] = estado.estado(0, 0);
-        c[2] = estado.estado(0, 0);
     }
 
     public double aleatorio() {
@@ -75,20 +76,20 @@ public class Cabina {
         this.c = c;
     }
 
-    public Estado getEstado() {
+    /*public Estado getEstado() {
         return estado;
     }
 
     public void setEstado(Estado estado) {
         this.estado = estado;
+    }*/
+
+    public String getEstadoCabina(int nroCabina) {
+        return c[nroCabina];
     }
 
-    public String getEstadoCabina() {
-        return estadoCabina;
-    }
-
-    public void setEstadoCabina(String estadoCabina) {
-        this.estadoCabina = estadoCabina;
+    public void setEstadoCabina(int nroCabina, int nroEstado) {
+        c[nroCabina] = estado.estado(0, nroEstado);
     }
 
 

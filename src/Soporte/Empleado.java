@@ -5,11 +5,13 @@ public class Empleado {
     private Estado estado;
     private int colaClientes;
     private String estadoEmpleado;
-
+    private boolean prioridadCabinaCobro;
+    
     public Empleado() {
         estado = new Estado();
         estadoEmpleado = estado.estado(2, 0); //Para el empleado estado Libre
         colaClientes = 0;
+        prioridadCabinaCobro = false;
     }
 
     public Estado getEstado() {
@@ -34,6 +36,16 @@ public class Empleado {
 
     public void setEstadoEmpleado(String estadoEmpleado) {
         this.estadoEmpleado = estadoEmpleado;
+    }
+    
+    public boolean getPrioridadCabinaCobro ()
+    {
+        return prioridadCabinaCobro;
+    }
+    
+    public void setPrioridadCabinaCobro(boolean prioridad)
+    {
+        prioridadCabinaCobro = prioridad;
     }
 
 }

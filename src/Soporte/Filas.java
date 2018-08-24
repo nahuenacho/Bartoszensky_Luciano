@@ -8,9 +8,10 @@ public class Filas {
     private double acuAtendidos, acuNoAtendidos, acuTiempoLlamada,ganancia, acuGanancia, gananciaNeta;
     private String evento, estadoCabina1, estadoCabina2, estadoEmpleado;
     private long colaCliente;
-    private LinkedList clientesTemporales, clientesCaja;
+    private LinkedList<Clientes> clientesTemporales, clientesCaja;
 
-    public Filas(String evento, double reloj, double rndCliente, double tiempoEntreLlegada, double proxLlegadaCliente, double finAsignacionCabina, double rndLlamada,double tiempoLlamada, double finLlamada1, double finLlamada2, double finCobro, String estadoCabina1, String estadoCabina2, String estadoEmpleado, long colaCliente, double acuAtendidos, double acuNoAtendidos, double acuTiempoLlamada, double ganancia, double acuGanancia, double gananciaNeta, LinkedList clientesTemporales, LinkedList clientesCaja) {
+    public Filas(String evento, double reloj, double rndCliente, double tiempoEntreLlegada, double proxLlegadaCliente, double finAsignacionCabina, double rndLlamada,double tiempoLlamada, double finLlamada1, double finLlamada2, double finCobro, String estadoCabina1, String estadoCabina2, String estadoEmpleado, long colaCliente, double acuAtendidos, double acuNoAtendidos, double acuTiempoLlamada, double ganancia, double acuGanancia, double gananciaNeta, LinkedList<Clientes> clientesTemporales, LinkedList<Clientes> clientesCaja) {
+        this.evento = evento;
         this.reloj = reloj;
         this.rndCliente = rndCliente;
         this.tiempoEntreLlegada = tiempoEntreLlegada;
@@ -204,19 +205,19 @@ public class Filas {
         this.colaCliente = colaCliente;
     }
 
-    public LinkedList getClientesTemporales() {
+    public LinkedList<Clientes> getClientesTemporales() {
         return clientesTemporales;
     }
 
-    public void setClientesTemporales(LinkedList clientesTemporales) {
+    public void setClientesTemporales(LinkedList<Clientes> clientesTemporales) {
         this.clientesTemporales = clientesTemporales;
     }
 
-    public LinkedList getClientesCaja() {
+    public LinkedList<Clientes> getClientesCaja() {
         return clientesCaja;
     }
 
-    public void setClientesCaja(LinkedList clientesCaja) {
+    public void setClientesCaja(LinkedList<Clientes> clientesCaja) {
         this.clientesCaja = clientesCaja;
     }
     

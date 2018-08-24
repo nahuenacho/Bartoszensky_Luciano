@@ -4,7 +4,7 @@ import java.util.LinkedList;
 
 public class SimulacionFinal {
 
-    private Cabina cabina;
+    /*private Cabina cabina;
     private Empleado empleado;
     private double reloj, rndCliente, tiempoEntreLlegada, proxLlegadaCliente, finAsignacionCabina, rndLlamada, finLlamada1, finLlamada2, finCobro;
     private double acuAtendidos, acuNoAtendidos, tiempoLlamada, acuTiempoLlamada, ganancia, acuGanancia, gananciaNeta;
@@ -95,5 +95,5 @@ public class SimulacionFinal {
 
         return pagar;
     }
-
+*/
 }

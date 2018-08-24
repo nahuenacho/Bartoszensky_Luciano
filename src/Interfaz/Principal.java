@@ -241,8 +241,8 @@ public class Principal extends javax.swing.JFrame {
         modelo2 = (DefaultTableModel)grillaCliente.getModel();
         modelo2.setRowCount(0);
 
-        SimulacionFinal(cantSimulaciones, mostrarDesde, mostrarHasta);
-        simular(mostrarDesde, mostrarHasta);
+        //SimulacionFinal(cantSimulaciones, mostrarDesde, mostrarHasta);
+        //simular(mostrarDesde, mostrarHasta);
     }//GEN-LAST:event_botonSimularActionPerformed
     //Boton para ver el Enunciado
     private void botonEnunciadoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonEnunciadoActionPerformed
@@ -262,7 +262,7 @@ public class Principal extends javax.swing.JFrame {
         resultado[5] = "Ganancia neta considerando el costo de perder clientes:  " +"$";
         JOptionPane.showMessageDialog(null, resultado);
     }//GEN-LAST:event_txt_InformeActionPerformed
-
+/*
     public void SimulacionFinal(int cantSimulaciones, int mostrarDesde, int mostrarHasta)
     {
         cabina = new Cabina();
@@ -621,7 +621,7 @@ public class Principal extends javax.swing.JFrame {
         aTruncar = truncado / 100.0;
         return aTruncar;
     }
-    
+    */
     public static void main(String args[]) {
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
