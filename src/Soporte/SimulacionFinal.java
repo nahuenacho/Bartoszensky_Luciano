@@ -4,13 +4,13 @@ import java.util.LinkedList;
 
 public class SimulacionFinal {
 
-    private Cabina cabina;
+     private Cabina cabina;
     private Empleado empleado;
-    private double reloj, rndCliente, tiempoEntreLlegada, ProxLlegadaCliente, finAsignacionCabina, rndLlamada, finLlamada1, finLlamada2, finCobro;
+    private double reloj, rndCliente, tiempoEntreLlegada, proxLlegadaCliente, finAsignacionCabina, rndLlamada, finLlamada1, finLlamada2, finCobro;
     private double acuAtendidos, acuNoAtendidos, tiempoLlamada, acuTiempoLlamada, ganancia, acuGanancia, gananciaNeta;
     private String evento, estadoCabina1, estadoCabina2, estadoEmpleado;
-    private long colaAsginacionEmpleado, colaCobroEmpleado;
-    private LinkedList clientesTemporales, clientesColaCobro, clientesColaAsignacion, simulacion;
+    private long colaCliente;
+    private LinkedList clientesTemporales, clientesCaja, simulacion;
     private Filas inicializacion;
     private int numeroCliente;
 
@@ -23,7 +23,7 @@ public class SimulacionFinal {
         evento = " - ";
         rndCliente = cabina.aleatorio();
         tiempoEntreLlegada = cabina.calcularTiempoLlegada(rndCliente);
-        ProxLlegadaCliente = cabina.calcularProxLlegada(tiempoEntreLlegada, reloj);
+        proxLlegadaCliente = cabina.calcularProxLlegada(tiempoEntreLlegada, reloj);
         finAsignacionCabina = cabina.calcularFinAsignacionCabina(reloj);
         //VER COMO HACER CON LAS LLAMADAS PORQUE TENGO 2 CABINAS
         rndLlamada = cabina.aleatorio();
@@ -43,16 +43,14 @@ public class SimulacionFinal {
         estadoCabina2 = cabina.getEstadoCabina();
         estadoEmpleado = empleado.getEstadoEmpleado();
         //Asigno cola a cada Objeto
-        colaAsginacionEmpleado = empleado.getColaAsgina();
-        colaCobroEmpleado = empleado.getColaCobro();
+        colaCliente = empleado.getColaClientes();
         //Creo los Objetos
         cabina = new Cabina();
         empleado = new Empleado();
         clientesTemporales = new LinkedList();
-        clientesColaCobro = new LinkedList();
-        clientesColaAsignacion = new LinkedList();
+        clientesCaja = new LinkedList();
         simulacion = new LinkedList();
-        inicializacion = new Filas(reloj, rndCliente, tiempoEntreLlegada, ProxLlegadaCliente, finAsignacionCabina, rndLlamada, finLlamada1, finLlamada2, finCobro, acuAtendidos, acuNoAtendidos, tiempoLlamada, acuTiempoLlamada, ganancia, acuGanancia, gananciaNeta, evento, estadoCabina1, estadoCabina2, estadoEmpleado, colaAsginacionEmpleado, colaCobroEmpleado, clientesTemporales, clientesColaCobro, clientesColaAsignacion);
+        inicializacion = new Filas( evento,  reloj,  rndCliente,  tiempoEntreLlegada,  proxLlegadaCliente,  finAsignacionCabina,  rndLlamada,  finLlamada1,  finLlamada2,  finCobro,  estadoCabina1,  estadoCabina2,  estadoEmpleado,  colaCliente,  acuAtendidos,  acuNoAtendidos,  tiempoLlamada,  acuTiempoLlamada,  ganancia,  acuGanancia,  gananciaNeta,  clientesTemporales,  clientesCaja);
         simulacion.add(inicializacion);
     }
 

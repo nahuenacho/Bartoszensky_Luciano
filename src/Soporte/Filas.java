@@ -4,17 +4,17 @@ import java.util.LinkedList;
 
 public class Filas {
     //Variables a utilizar
-    private double reloj, rndCliente, tiempoEntreLlegada, ProxLlegadaCliente, finAsignacionCabina, rndLlamada, finLlamada1, finLlamada2,finCobro;
+    private double reloj, rndCliente, tiempoEntreLlegada, proxLlegadaCliente, finAsignacionCabina, rndLlamada, finLlamada1, finLlamada2,finCobro;
     private double acuAtendidos, acuNoAtendidos, tiempoLlamada, acuTiempoLlamada,ganancia, acuGanancia, gananciaNeta;
     private String evento, estadoCabina1, estadoCabina2, estadoEmpleado;
-    private long colaAsginacionEmpleado, colaCobroEmpleado;
-    private LinkedList clientesTemporales, clientesColaCobro, clientesColaAsignacion;
+    private long colaCliente;
+    private LinkedList clientesTemporales, clientesCaja;
 
-    public Filas(double reloj, double rndCliente, double tiempoEntreLlegada, double ProxLlegadaCliente, double finAsignacionCabina, double rndLlamada, double finLlamada1, double finLlamada2, double finCobro, double acuAtendidos, double acuNoAtendidos, double tiempoLlamada, double acuTiempoLlamada, double ganancia, double acuGanancia, double gananciaNeta, String evento, String estadoCabina1, String estadoCabina2, String estadoEmpleado, long colaAsginacionEmpleado, long colaCobroEmpleado, LinkedList clientesTemporales, LinkedList clientesColaCobro, LinkedList clientesColaAsignacion) {
+    public Filas(String evento, double reloj, double rndCliente, double tiempoEntreLlegada, double proxLlegadaCliente, double finAsignacionCabina, double rndLlamada, double finLlamada1, double finLlamada2, double finCobro, String estadoCabina1, String estadoCabina2, String estadoEmpleado, long colaCliente, double acuAtendidos, double acuNoAtendidos, double tiempoLlamada, double acuTiempoLlamada, double ganancia, double acuGanancia, double gananciaNeta, LinkedList clientesTemporales, LinkedList clientesCaja) {
         this.reloj = reloj;
         this.rndCliente = rndCliente;
         this.tiempoEntreLlegada = tiempoEntreLlegada;
-        this.ProxLlegadaCliente = ProxLlegadaCliente;
+        this.proxLlegadaCliente = proxLlegadaCliente;
         this.finAsignacionCabina = finAsignacionCabina;
         this.rndLlamada = rndLlamada;
         this.finLlamada1 = finLlamada1;
@@ -31,11 +31,9 @@ public class Filas {
         this.estadoCabina1 = estadoCabina1;
         this.estadoCabina2 = estadoCabina2;
         this.estadoEmpleado = estadoEmpleado;
-        this.colaAsginacionEmpleado = colaAsginacionEmpleado;
-        this.colaCobroEmpleado = colaCobroEmpleado;
+        this.colaCliente = colaCliente;
         this.clientesTemporales = clientesTemporales;
-        this.clientesColaCobro = clientesColaCobro;
-        this.clientesColaAsignacion = clientesColaAsignacion;
+        this.clientesCaja = clientesCaja;
     }
 
     public double getReloj() {
@@ -63,11 +61,11 @@ public class Filas {
     }
 
     public double getProxLlegadaCliente() {
-        return ProxLlegadaCliente;
+        return proxLlegadaCliente;
     }
 
-    public void setProxLlegadaCliente(double ProxLlegadaCliente) {
-        this.ProxLlegadaCliente = ProxLlegadaCliente;
+    public void setProxLlegadaCliente(double proxLlegadaCliente) {
+        this.proxLlegadaCliente = proxLlegadaCliente;
     }
 
     public double getFinAsignacionCabina() {
@@ -198,20 +196,12 @@ public class Filas {
         this.estadoEmpleado = estadoEmpleado;
     }
 
-    public long getColaAsginacionEmpleado() {
-        return colaAsginacionEmpleado;
+    public long getColaCliente() {
+        return colaCliente;
     }
 
-    public void setColaAsginacionEmpleado(long colaAsginacionEmpleado) {
-        this.colaAsginacionEmpleado = colaAsginacionEmpleado;
-    }
-
-    public long getColaCobroEmpleado() {
-        return colaCobroEmpleado;
-    }
-
-    public void setColaCobroEmpleado(long colaCobroEmpleado) {
-        this.colaCobroEmpleado = colaCobroEmpleado;
+    public void setColaCliente(long colaCliente) {
+        this.colaCliente = colaCliente;
     }
 
     public LinkedList getClientesTemporales() {
@@ -222,21 +212,14 @@ public class Filas {
         this.clientesTemporales = clientesTemporales;
     }
 
-    public LinkedList getClientesColaCobro() {
-        return clientesColaCobro;
+    public LinkedList getClientesCaja() {
+        return clientesCaja;
     }
 
-    public void setClientesColaCobro(LinkedList clientesColaCobro) {
-        this.clientesColaCobro = clientesColaCobro;
+    public void setClientesCaja(LinkedList clientesCaja) {
+        this.clientesCaja = clientesCaja;
     }
-
-    public LinkedList getClientesColaAsignacion() {
-        return clientesColaAsignacion;
-    }
-
-    public void setClientesColaAsignacion(LinkedList clientesColaAsignacion) {
-        this.clientesColaAsignacion = clientesColaAsignacion;
-    }
-
+    
+    
     
 }

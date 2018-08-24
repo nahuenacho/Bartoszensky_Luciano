@@ -12,11 +12,11 @@ public class Principal extends javax.swing.JFrame {
     //Variables
     private Cabina cabina;
     private Empleado empleado;
-    private double reloj, rndCliente, tiempoEntreLlegada, ProxLlegadaCliente, finAsignacionCabina, rndLlamada, finLlamada1, finLlamada2, finCobro;
+    private double reloj, rndCliente, tiempoEntreLlegada, proxLlegadaCliente, finAsignacionCabina, rndLlamada, finLlamada1, finLlamada2, finCobro;
     private double acuAtendidos, acuNoAtendidos, tiempoLlamada, acuTiempoLlamada, ganancia, acuGanancia, gananciaNeta;
     private String evento, estadoCabina1, estadoCabina2, estadoEmpleado;
-    private long colaAsginacionEmpleado, colaCobroEmpleado;
-    private LinkedList clientesTemporales, clientesColaCobro, clientesColaAsignacion, simulacion;
+    private long colaCliente;
+    private LinkedList clientesTemporales, clientesCaja, simulacion;
     private Filas inicializacion;
     private int numeroCliente;
     DefaultTableModel modelo1 = new DefaultTableModel();
@@ -250,6 +250,7 @@ public class Principal extends javax.swing.JFrame {
         enunciado.setVisible(true);
     }//GEN-LAST:event_botonEnunciadoActionPerformed
 
+    //Boton para ver los resultados 
     private void txt_InformeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txt_InformeActionPerformed
         String resultado[] = new String[6];
         resultado[0] = "Porcentaje de personas que no consiguen cabina:  " + "%";
@@ -268,7 +269,7 @@ public class Principal extends javax.swing.JFrame {
         reloj = 0.0;
         rndCliente = cabina.aleatorio();
         tiempoEntreLlegada = cabina.calcularTiempoLlegada(rndCliente);
-        ProxLlegadaCliente = cabina.calcularProxLlegada(tiempoEntreLlegada, reloj);
+        proxLlegadaCliente = cabina.calcularProxLlegada(tiempoEntreLlegada, reloj);
         finAsignacionCabina = cabina.calcularFinAsignacionCabina(reloj);
         rndLlamada = cabina.aleatorio();
         finLlamada1 = -1.0;
@@ -285,14 +286,114 @@ public class Principal extends javax.swing.JFrame {
         estadoCabina1 = cabina.getEstadoCabina();
         estadoCabina2 = cabina.getEstadoCabina();
         estadoEmpleado = empleado.getEstadoEmpleado();
-        colaAsginacionEmpleado = empleado.getColaAsgina();
-        colaCobroEmpleado = empleado.getColaCobro();
+        clientesCaja = new LinkedList();
         clientesTemporales = new LinkedList();
-        clientesColaCobro = new LinkedList();
-        clientesColaAsignacion = new LinkedList();
         simulacion = new LinkedList();
-        inicializacion = new Filas(reloj, rndCliente, tiempoEntreLlegada, ProxLlegadaCliente, finAsignacionCabina, rndLlamada, finLlamada1, finLlamada2, finCobro, acuAtendidos, acuNoAtendidos, tiempoLlamada, acuTiempoLlamada, ganancia, acuGanancia, gananciaNeta, evento, estadoCabina1, estadoCabina2, estadoEmpleado, colaAsginacionEmpleado, colaCobroEmpleado, clientesTemporales, clientesColaCobro, clientesColaAsignacion);
+        inicializacion = new Filas( evento,  reloj,  rndCliente,  tiempoEntreLlegada,  proxLlegadaCliente,  finAsignacionCabina,  rndLlamada,  finLlamada1,  finLlamada2,  finCobro,  estadoCabina1,  estadoCabina2,  estadoEmpleado,  colaCliente,  acuAtendidos,  acuNoAtendidos,  tiempoLlamada,  acuTiempoLlamada,  ganancia,  acuGanancia,  gananciaNeta,  clientesTemporales,  clientesCaja);
         simulacion.add(inicializacion);
+        
+        if(mostrarDesde == 0)
+        {
+            this.imprimirFila( evento,  reloj,  rndCliente,  tiempoEntreLlegada,  proxLlegadaCliente,  finAsignacionCabina,  rndLlamada,  finLlamada1,  finLlamada2,  finCobro,  estadoCabina1,  estadoCabina2,  estadoEmpleado,  colaCliente,  acuAtendidos,  acuNoAtendidos,  tiempoLlamada,  acuTiempoLlamada,  ganancia,  acuGanancia,  gananciaNeta,  clientesTemporales,  clientesCaja);
+        }
+    }
+    
+    //FALTA MODIFICAR
+    public void imprimirFila(String evento, double reloj, double rndCliente, double tiempoEntreLlegada, double proxLlegadaCliente, double finAsignacionCabina, double rndLlamada, double finLlamada1, double finLlamada2, double finCobro, String estadoCabina1, String estadoCabina2, String estadoEmpleado, long colaCliente, double acuAtendidos, double acuNoAtendidos, double tiempoLlamada, double acuTiempoLlamada, double ganancia, double acuGanancia, double gananciaNeta, LinkedList clientesTemporales, LinkedList clientesCaja){
+     
+         Object[] fila = new Object[17];
+        fila[0] = r;
+        fila[1] = pE;
+        
+        if(rndCli < 0)
+        {fila[2] = " - ";}
+        else{fila[2] = rndCli;}
+        
+        if(tLC < 0)
+        {fila[3] = " - ";}
+        else{fila[3] = tLC;}
+        
+        if(pLC < 0)
+        {fila[4] = " - ";}
+        else{fila[4] = pLC;}
+        
+        if(rndCaj < 0)
+        {fila[5] = " - ";}
+        else{fila[5] = rndCaj;}
+        
+        if(tCC < 0)
+        {fila[6] = " - ";}
+        else{fila[6] = tCC;}
+        
+        if(fCC < 0)
+        {fila[7] = " - ";}
+        else{fila[7] = fCC;}
+        
+        if(a)
+        {fila[8] = "Si";}
+        else{fila[8]= "No";}
+        
+        if(hIA < 0)
+        {fila[9] = " - ";}
+        else{fila[9] = hIA;}
+        
+        fila[10] = eC;
+        fila[11] = cC;
+        fila[12] = dC;
+        fila[13] = aA;
+        fila[14] = aE;
+        fila[15] = cCA;
+        fila[16] = tME;
+        modelo1.addRow(fila);
+        
+        if(cT.size()!=0)
+        {
+            for(int i = 0; i < cT.size(); i++)
+            {
+                Object [] clientesImprimir = new Object[3];
+                
+                //Imprimir Reloj
+                if(i == 0)
+                {
+                    clientesImprimir[0] = r;
+                    clientesImprimir[1] = "";
+                    clientesImprimir[2] = "";
+                    modelo2.addRow(clientesImprimir);
+                }
+
+                //Cada Cliente de ese tiempo
+                clientesImprimir = new Object[3];
+
+                Clientes c = (Clientes) cT.get(i);
+                clientesImprimir[0] = c.getId();
+                clientesImprimir[1] = c.estado();
+                if(c.getHoraInicioCola() < 0)
+                {clientesImprimir[2] = " - ";}
+                else{clientesImprimir[2] = c.getHoraInicioCola();}
+                modelo2.addRow(clientesImprimir);
+                
+            }
+            
+            Object [] clientesImprimir = new Object[3];
+            clientesImprimir[0] = "";
+            clientesImprimir[1] = "";
+            clientesImprimir[2] = "";
+            modelo2.addRow(clientesImprimir);
+        }
+        else
+        {
+            Object [] clientesImprimir = new Object[3];
+            clientesImprimir[0] = r;
+            clientesImprimir[1] = "";
+            clientesImprimir[2] = "";
+            modelo2.addRow(clientesImprimir);
+            
+            clientesImprimir[0] = "";
+            clientesImprimir[1] = "";
+            clientesImprimir[2] = "";
+            modelo2.addRow(clientesImprimir);
+            
+        }
     }
     
     //FALTA MODIFICAR
