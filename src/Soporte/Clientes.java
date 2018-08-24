@@ -3,7 +3,7 @@ package Soporte;
 public class Clientes {
     
     private Estado estado;
-    private double horaInicioLlamada, horaInicioCola, horaFinCola;
+    private double horaInicioLlamada, horaInicioCola, duracionLlamada;
     private long id;
     private String estadoCliente;
 
@@ -13,7 +13,7 @@ public class Clientes {
         this.id = id;
         estadoCliente = estado.estado(1, 0);
         this.horaInicioCola = 0.0;
-        this.horaFinCola = 0.0;
+        this.duracionLlamada = 0.0;
     }
     /*
     public String estado()
@@ -60,13 +60,13 @@ public class Clientes {
         horaInicioCola = horaInicioC;
     }
     
-    public Double getHoraFinCola()
+    public Double getDuracionLlamada()
     {
-        return horaFinCola;
+        return duracionLlamada;
     }
     
-    public void setHoraFinCola(double horaFinC)
+    public void setDuracionLlamada(double duracionL)
     {
-        horaFinCola = horaFinC;
+        duracionLlamada = duracionL;
     }
 }
