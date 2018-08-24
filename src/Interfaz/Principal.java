@@ -1,6 +1,7 @@
 package Interfaz;
 
 import Soporte.Cabina;
+import Soporte.Clientes;
 import Soporte.Empleado;
 import Soporte.Filas;
 import java.util.LinkedList;
@@ -74,17 +75,17 @@ public class Principal extends javax.swing.JFrame {
         grillaFilas.setFont(new java.awt.Font("Verdana", 0, 11)); // NOI18N
         grillaFilas.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null}
+                {null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null}
             },
             new String [] {
-                "Evento", "Reloj", "RND Cliente", "Tiempo entre Llegada", "Prox Llegada Cliente", "Fin Asignacion Cabina", "RND Llamada", "Tiempo Llamada", "Fin Llamada C1", "Fin Llamada C2", "Fin Tiempo Cobro", "Estado Cabina 1", "Estado Cabina 2", "Estado Empleado", "Cola Asginacion Empleado", "Cola Cobro Empleado", "Acumulador Cli Aten", "Acumulador Cli No Aten", "Tiempo llamada", "Acu Tiempo Llamada", "Ganancia", "Acu Ganancia", "Ganancia Neta"
+                "Evento", "Reloj", "RND Cliente", "Tiempo entre Llegada", "Prox Llegada Cliente", "Fin Asignacion Cabina", "RND Llamada", "Tiempo Llamada", "Fin Llamada C1", "Fin Llamada C2", "Fin Tiempo Cobro", "Estado Cabina 1", "Estado Cabina 2", "Estado Empleado", "Cola Clientes", "Acumulador Cli Aten", "Acumulador Cli No Aten", "Tiempo llamada", "Acu Tiempo Llamada", "Ganancia", "Acu Ganancia", "Ganancia Neta"
             }
         ) {
             boolean[] canEdit = new boolean [] {
-                false, false, false, false, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true
+                false, false, false, false, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true
             };
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
@@ -294,68 +295,78 @@ public class Principal extends javax.swing.JFrame {
         
         if(mostrarDesde == 0)
         {
-            this.imprimirFila( evento,  reloj,  rndCliente,  tiempoEntreLlegada,  proxLlegadaCliente,  finAsignacionCabina,  rndLlamada,  finLlamada1,  finLlamada2,  finCobro,  estadoCabina1,  estadoCabina2,  estadoEmpleado,  colaCliente,  acuAtendidos,  acuNoAtendidos,  tiempoLlamada,  acuTiempoLlamada,  ganancia,  acuGanancia,  gananciaNeta,  clientesTemporales,  clientesCaja);
+            this.imprimirFila( evento,  reloj,  rndCliente,  tiempoEntreLlegada,  proxLlegadaCliente,  finAsignacionCabina,  rndLlamada,  finLlamada1,  finLlamada2,  finCobro,  estadoCabina1,  estadoCabina2,  estadoEmpleado,  colaCliente,  acuAtendidos,  acuNoAtendidos,  tiempoLlamada,  acuTiempoLlamada,  ganancia,  acuGanancia,  gananciaNeta,  clientesCaja);
         }
     }
     
     //FALTA MODIFICAR
-    public void imprimirFila(String evento, double reloj, double rndCliente, double tiempoEntreLlegada, double proxLlegadaCliente, double finAsignacionCabina, double rndLlamada, double finLlamada1, double finLlamada2, double finCobro, String estadoCabina1, String estadoCabina2, String estadoEmpleado, long colaCliente, double acuAtendidos, double acuNoAtendidos, double tiempoLlamada, double acuTiempoLlamada, double ganancia, double acuGanancia, double gananciaNeta, LinkedList clientesTemporales, LinkedList clientesCaja){
+    public void imprimirFila(String evento, double reloj, double rndCliente, double tiempoEntreLlegada, double proxLlegadaCliente, double finAsignacionCabina, double rndLlamada, double finLlamada1, double finLlamada2, double finCobro, String estadoCabina1, String estadoCabina2, String estadoEmpleado, long colaCliente, double acuAtendidos, double acuNoAtendidos, double tiempoLlamada, double acuTiempoLlamada, double ganancia, double acuGanancia, double gananciaNeta, LinkedList clientesCaja){
      
-         Object[] fila = new Object[17];
-        fila[0] = r;
-        fila[1] = pE;
+         Object[] fila = new Object[22];
+        fila[0] = evento;
+        fila[1] = reloj;
         
-        if(rndCli < 0)
+        if(rndCliente < 0)
         {fila[2] = " - ";}
-        else{fila[2] = rndCli;}
+        else{fila[2] = rndCliente;}
         
-        if(tLC < 0)
+        if(tiempoEntreLlegada < 0)
         {fila[3] = " - ";}
-        else{fila[3] = tLC;}
+        else{fila[3] = tiempoEntreLlegada;}
         
-        if(pLC < 0)
+        if(proxLlegadaCliente < 0)
         {fila[4] = " - ";}
-        else{fila[4] = pLC;}
+        else{fila[4] = proxLlegadaCliente;}
         
-        if(rndCaj < 0)
+        if(finAsignacionCabina < 0)
         {fila[5] = " - ";}
-        else{fila[5] = rndCaj;}
+        else{fila[5] = finAsignacionCabina;}
         
-        if(tCC < 0)
+        if(rndLlamada < 0)
         {fila[6] = " - ";}
-        else{fila[6] = tCC;}
+        else{fila[6] = rndLlamada;}
         
-        if(fCC < 0)
+        if(tiempoLlamada < 0)
         {fila[7] = " - ";}
-        else{fila[7] = fCC;}
+        else{fila[7] = tiempoLlamada;}
         
-        if(a)
-        {fila[8] = "Si";}
-        else{fila[8]= "No";}
+        if(finLlamada1 < 0)
+        {fila[8] = " - ";}
+        else{fila[8]= finLlamada1;}
         
-        if(hIA < 0)
+        if(finLlamada2 < 0)
         {fila[9] = " - ";}
-        else{fila[9] = hIA;}
+        else{fila[9] = finLlamada2;}
         
-        fila[10] = eC;
-        fila[11] = cC;
-        fila[12] = dC;
-        fila[13] = aA;
-        fila[14] = aE;
-        fila[15] = cCA;
-        fila[16] = tME;
+        if(finCobro < 0)
+        {fila[10] = " - ";}
+        else{fila[10] = finCobro;}
+               
+        fila[11] = this.estadoCabina1;
+        fila[12] = this.estadoCabina2;
+        fila[13] = estadoEmpleado;
+        fila[14] = this.colaCliente;
+        fila[15] = this.acuAtendidos;
+        fila[16] = this.acuNoAtendidos;
+        fila[17] = this.tiempoLlamada;
+        fila[18] = this.acuTiempoLlamada;
+        fila[19] = this.ganancia;
+        fila[20] = this.acuGanancia;
+        fila[21] = this.gananciaNeta;
+        fila[22] = this.tiempoLlamada;
         modelo1.addRow(fila);
         
-        if(cT.size()!=0)
+        //Para la tabla de clientes
+        if(clientesCaja.size()!=0)
         {
-            for(int i = 0; i < cT.size(); i++)
+            for(int i = 0; i < clientesCaja.size(); i++)
             {
                 Object [] clientesImprimir = new Object[3];
                 
                 //Imprimir Reloj
                 if(i == 0)
                 {
-                    clientesImprimir[0] = r;
+                    clientesImprimir[0] = reloj;
                     clientesImprimir[1] = "";
                     clientesImprimir[2] = "";
                     modelo2.addRow(clientesImprimir);
@@ -364,12 +375,12 @@ public class Principal extends javax.swing.JFrame {
                 //Cada Cliente de ese tiempo
                 clientesImprimir = new Object[3];
 
-                Clientes c = (Clientes) cT.get(i);
+                Clientes c = (Clientes) clientesCaja.get(i);
                 clientesImprimir[0] = c.getId();
                 clientesImprimir[1] = c.estado();
-                if(c.getHoraInicioCola() < 0)
+                if(c.getHoraInicioLlamada() < 0)
                 {clientesImprimir[2] = " - ";}
-                else{clientesImprimir[2] = c.getHoraInicioCola();}
+                else{clientesImprimir[2] = c.getHoraInicioLlamada();}
                 modelo2.addRow(clientesImprimir);
                 
             }
@@ -383,7 +394,7 @@ public class Principal extends javax.swing.JFrame {
         else
         {
             Object [] clientesImprimir = new Object[3];
-            clientesImprimir[0] = r;
+            clientesImprimir[0] = reloj;
             clientesImprimir[1] = "";
             clientesImprimir[2] = "";
             modelo2.addRow(clientesImprimir);
@@ -600,11 +611,6 @@ public class Principal extends javax.swing.JFrame {
             }
             t++;
         }
-    }
-    
-    //FALTA MODIFICAR
-    public void imprimirFila(){
-        
     }
     
     public double truncador(double valorATruncar)

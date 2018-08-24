@@ -163,7 +163,7 @@
               <Font name="Verdana" size="11" style="0"/>
             </Property>
             <Property name="model" type="javax.swing.table.TableModel" editor="org.netbeans.modules.form.editors2.TableModelEditor">
-              <Table columnCount="23" rowCount="4">
+              <Table columnCount="22" rowCount="4">
                 <Column editable="false" title="Evento" type="java.lang.Object"/>
                 <Column editable="false" title="Reloj" type="java.lang.Object"/>
                 <Column editable="false" title="RND Cliente" type="java.lang.Object"/>
@@ -178,8 +178,7 @@
                 <Column editable="true" title="Estado Cabina 1" type="java.lang.Object"/>
                 <Column editable="true" title="Estado Cabina 2" type="java.lang.Object"/>
                 <Column editable="true" title="Estado Empleado" type="java.lang.Object"/>
-                <Column editable="true" title="Cola Asginacion Empleado" type="java.lang.Object"/>
-                <Column editable="true" title="Cola Cobro Empleado" type="java.lang.Object"/>
+                <Column editable="true" title="Cola Clientes" type="java.lang.Object"/>
                 <Column editable="true" title="Acumulador Cli Aten" type="java.lang.Object"/>
                 <Column editable="true" title="Acumulador Cli No Aten" type="java.lang.Object"/>
                 <Column editable="true" title="Tiempo llamada" type="java.lang.Object"/>
