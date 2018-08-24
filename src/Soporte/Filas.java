@@ -4,37 +4,42 @@ import java.util.LinkedList;
 
 public class Filas {
     //Variables a utilizar
-    private double reloj, rndCliente, tiempoEntreLlegada, proxLlegadaCliente, finAsignacionCabina, rndLlamada,tiempoLlamada, finLlamada1, finLlamada2,finCobro;
-    private double acuAtendidos, acuNoAtendidos, acuTiempoLlamada,ganancia, acuGanancia, gananciaNeta;
+    private double reloj, rndLlegadaCliente, tiempoEntreLlegada, proxLlegadaCliente, finAsignacionCabina, rndDuracionLlamada,tiempoLlamada, finLlamada1, finLlamada2,finCobro;
+    private double acuAtendidos, acuNoAtendidos, acuTiempoLlamada, acuPerdida, acuGanancia, gananciaNeta, inicioLlamadaC1, inicioLlamadaC2;
     private String evento, estadoCabina1, estadoCabina2, estadoEmpleado;
-    private long colaCliente;
-    private LinkedList<Clientes> clientesTemporales, clientesCaja;
+    private long colaCliente, colaMaxima;
+    private LinkedList<Clientes> clientesTemporales, clientesCaja, clientesEsperandoAsignacion;
+    private boolean esperaCabina;
 
-    public Filas(String evento, double reloj, double rndCliente, double tiempoEntreLlegada, double proxLlegadaCliente, double finAsignacionCabina, double rndLlamada,double tiempoLlamada, double finLlamada1, double finLlamada2, double finCobro, String estadoCabina1, String estadoCabina2, String estadoEmpleado, long colaCliente, double acuAtendidos, double acuNoAtendidos, double acuTiempoLlamada, double ganancia, double acuGanancia, double gananciaNeta, LinkedList<Clientes> clientesTemporales, LinkedList<Clientes> clientesCaja) {
+    public Filas(String evento, double reloj, double rndLlegadaCliente, double tiempoEntreLlegada, double proxLlegadaCliente, double finAsignacionCabina, double rndDuracionLlamada, double tiempoLlamada, double inicioLlamadaC1, double finLlamada1, double inicioLlamadaC2, double finLlamada2, double finCobro, String estadoCabina1, String estadoCabina2, String estadoEmpleado, boolean esperaCabina ,long colaCliente, double acuAtendidos, double acuNoAtendidos, long colaMaxima, double acuTiempoLlamada, double acuGanancia, double acuPerdida, double gananciaNeta, LinkedList<Clientes> clientesTemporales, LinkedList<Clientes> clientesCaja, LinkedList<Clientes> clientesEsperandoAsignacion) {
         this.evento = evento;
         this.reloj = reloj;
-        this.rndCliente = rndCliente;
+        this.rndLlegadaCliente = rndLlegadaCliente;
         this.tiempoEntreLlegada = tiempoEntreLlegada;
         this.proxLlegadaCliente = proxLlegadaCliente;
         this.finAsignacionCabina = finAsignacionCabina;
-        this.rndLlamada = rndLlamada;
+        this.rndDuracionLlamada = rndDuracionLlamada;
+        this.tiempoLlamada = tiempoLlamada;
+        this.inicioLlamadaC1 = inicioLlamadaC1;
         this.finLlamada1 = finLlamada1;
+        this.inicioLlamadaC2 = inicioLlamadaC2;
         this.finLlamada2 = finLlamada2;
         this.finCobro = finCobro;
-        this.acuAtendidos = acuAtendidos;
-        this.acuNoAtendidos = acuNoAtendidos;
-        this.tiempoLlamada = tiempoLlamada;
-        this.acuTiempoLlamada = acuTiempoLlamada;
-        this.ganancia = ganancia;
-        this.acuGanancia = acuGanancia;
-        this.gananciaNeta = gananciaNeta;
-        this.evento = evento;
         this.estadoCabina1 = estadoCabina1;
         this.estadoCabina2 = estadoCabina2;
         this.estadoEmpleado = estadoEmpleado;
+        this.esperaCabina = esperaCabina;
         this.colaCliente = colaCliente;
+        this.acuAtendidos = acuAtendidos;
+        this.acuNoAtendidos = acuNoAtendidos;
+        this.colaMaxima = colaMaxima;
+        this.acuTiempoLlamada = acuTiempoLlamada;
+        this.acuGanancia = acuGanancia;
+        this.acuPerdida = acuPerdida;
+        this.gananciaNeta = gananciaNeta;
         this.clientesTemporales = clientesTemporales;
         this.clientesCaja = clientesCaja;
+        this.clientesEsperandoAsignacion = clientesEsperandoAsignacion;
     }
 
     public double getReloj() {
@@ -45,12 +50,12 @@ public class Filas {
         this.reloj = reloj;
     }
 
-    public double getRndCliente() {
-        return rndCliente;
+    public double getRndLlegadaCliente() {
+        return rndLlegadaCliente;
     }
 
-    public void setRndCliente(double rndCliente) {
-        this.rndCliente = rndCliente;
+    public void setRndCliente(double rndLlegadaCliente) {
+        this.rndLlegadaCliente = rndLlegadaCliente;
     }
 
     public double getTiempoEntreLlegada() {
@@ -77,12 +82,12 @@ public class Filas {
         this.finAsignacionCabina = finAsignacionCabina;
     }
 
-    public double getRndLlamada() {
-        return rndLlamada;
+    public double getrndDuracionLlamada() {
+        return rndDuracionLlamada;
     }
 
-    public void setRndLlamada(double rndLlamada) {
-        this.rndLlamada = rndLlamada;
+    public void setrndDuracionLlamada(double rndDuracionLlamada) {
+        this.rndDuracionLlamada = rndDuracionLlamada;
     }
 
     public double getFinLlamada1() {
@@ -141,12 +146,12 @@ public class Filas {
         this.acuTiempoLlamada = acuTiempoLlamada;
     }
 
-    public double getGanancia() {
-        return ganancia;
+    public double getAcuPerdida() {
+        return acuPerdida;
     }
 
-    public void setGanancia(double ganancia) {
-        this.ganancia = ganancia;
+    public void setAcuPerdida(double acuPerdida) {
+        this.acuPerdida = acuPerdida;
     }
 
     public double getAcuGanancia() {
@@ -221,6 +226,45 @@ public class Filas {
         this.clientesCaja = clientesCaja;
     }
     
+        public double getInicioLlamadaC1() {
+        return inicioLlamadaC1;
+    }
+
+    public void setInicioLlamadaC1(double inicioLlamadaC1) {
+        this.inicioLlamadaC1 = inicioLlamadaC1;
+    }
+
+    public double getInicioLlamadaC2() {
+        return inicioLlamadaC2;
+    }
+
+    public void setInicioLlamadaC2(double inicioLlamadaC2) {
+        this.inicioLlamadaC2 = inicioLlamadaC2;
+    }
+
+    public boolean isEsperaCabina() {
+        return esperaCabina;
+    }
+
+    public void setEsperaCabina(boolean esperaCabina) {
+        this.esperaCabina = esperaCabina;
+    }
+
+    public long getColaMaxima() {
+        return colaMaxima;
+    }
+
+    public void setColaMaxima(long colaMaxima) {
+        this.colaMaxima = colaMaxima;
+    }
+
+    public LinkedList<Clientes> getClientesEsperandoAsignacion() {
+        return clientesEsperandoAsignacion;
+    }
+
+    public void setClientesEsperandoAsignacion(LinkedList<Clientes> clientesEsperandoAsignacion) {
+        this.clientesEsperandoAsignacion = clientesEsperandoAsignacion;
+    }
     
     
 }
