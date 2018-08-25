@@ -252,7 +252,7 @@ public class Principal extends javax.swing.JFrame {
         modelo2 = (DefaultTableModel)grillaCliente.getModel();
         modelo2.setRowCount(0);
 
-        //SimulacionFinal(cantSimulaciones, mostrarDesde, mostrarHasta);
+        SimulacionFinal(cantSimulaciones, mostrarDesde, mostrarHasta);
         //simular(mostrarDesde, mostrarHasta);
     }//GEN-LAST:event_botonSimularActionPerformed
     //Boton para ver el Enunciado
@@ -392,6 +392,25 @@ public class Principal extends javax.swing.JFrame {
         modelo1.addRow(fila);
         
         //Para la tabla de clientes
+        //Clientes que estan siendo atendidos o llamando por telefono
+        if(clientesTemporales.size() == 0)
+        {
+            
+        }
+        
+        //Clientes que estan esperando pagar
+        if(clientesCaja.size() == 0)
+        {
+            
+        }
+        
+        //Clientes que estan esperando que los asignen a una cabina
+        if(clientesAsignacion.size() == 0)
+        {
+            
+        }
+        
+        //Borrar si no sirve
         if(clientesCaja.size()!=0)
         {
             for(int i = 0; i < clientesCaja.size(); i++)
@@ -421,23 +440,26 @@ public class Principal extends javax.swing.JFrame {
                 
             }
             
-            Object [] clientesImprimir = new Object[3];
+            Object [] clientesImprimir = new Object[4];
             clientesImprimir[0] = "";
             clientesImprimir[1] = "";
             clientesImprimir[2] = "";
+            clientesImprimir[3] = "";
             modelo2.addRow(clientesImprimir);
         }
         else
         {
-            Object [] clientesImprimir = new Object[3];
+            Object [] clientesImprimir = new Object[4];
             clientesImprimir[0] = reloj;
             clientesImprimir[1] = "";
             clientesImprimir[2] = "";
+            clientesImprimir[3] = "";
             modelo2.addRow(clientesImprimir);
             
             clientesImprimir[0] = "";
             clientesImprimir[1] = "";
             clientesImprimir[2] = "";
+            clientesImprimir[3] = "";
             modelo2.addRow(clientesImprimir);
             
         }
