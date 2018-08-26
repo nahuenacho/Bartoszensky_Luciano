@@ -34,8 +34,8 @@ public class Empleado {
         return estadoEmpleado;
     }
 
-    public void setEstadoEmpleado(String estadoEmpleado) {
-        this.estadoEmpleado = estadoEmpleado;
+    public void setEstadoEmpleado(int i) {
+        this.estadoEmpleado = this.estado.estado(2, i);
     }
     
     public boolean getPrioridadCabinaCobro ()

@@ -7,6 +7,8 @@ public class Clientes {
     private long id;
     private String estadoCliente;
 
+    //El atributo inicio llamada no se utiliza, se utiliza inicio cola para ambos
+    
     public Clientes(double horaInicioLlamada, long id) {
         estado = new Estado();
         this.horaInicioLlamada = horaInicioLlamada;

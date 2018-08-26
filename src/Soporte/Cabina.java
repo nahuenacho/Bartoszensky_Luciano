@@ -68,6 +68,14 @@ public class Cabina {
         return tiempo;
     }
 
+    public double calcularFinLlamada(double duracionLlamada, double reloj) {
+        Double tiempo = reloj + duracionLlamada;
+        tiempo = tiempo * 100;
+        int devolver = tiempo.intValue();
+        tiempo = devolver / 100.0;
+        return tiempo;
+    }
+    
     public String[] getC() {
         return c;
     }

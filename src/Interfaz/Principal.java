@@ -21,7 +21,7 @@ public class Principal extends javax.swing.JFrame {
     private LinkedList<Clientes> clientesTemporales, clientesCaja, clientesCabina;
     private LinkedList simulacion;
     
-    private int numeroCliente;
+    private int numeroCliente = 0;
     
 
     private Filas inicializacion;
@@ -115,7 +115,7 @@ public class Principal extends javax.swing.JFrame {
                 {null, null, null, null}
             },
             new String [] {
-                "ID Cliente", "Estado", "Inicio Cola", "Duracion Llamada"
+                "ID Cliente", "Estado", "Inicio Cola / Llamada", "Duracion Llamada"
             }
         ));
         jScrollPane3.setViewportView(grillaCliente);
@@ -140,11 +140,11 @@ public class Principal extends javax.swing.JFrame {
                             .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 1409, Short.MAX_VALUE)
                             .addGroup(layout.createSequentialGroup()
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addGroup(layout.createSequentialGroup()
                                         .addComponent(botonSimular)
                                         .addGap(38, 38, 38)
-                                        .addComponent(botonEnunciado)))
+                                        .addComponent(botonEnunciado))
+                                    .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 499, javax.swing.GroupLayout.PREFERRED_SIZE))
                                 .addGap(0, 0, Short.MAX_VALUE))))
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jLabel1)
@@ -325,7 +325,7 @@ public class Principal extends javax.swing.JFrame {
     }
     
     //FALTA MODIFICAR
-    public void imprimirFila(String evento, double reloj, double rndCliente, double tiempoEntreLlegada, double proxLlegadaCliente, double finAsignacionCabina, double rndLlamada, double tiempoLlamada, double inicioLlamadaC1, double finLlamada1, double inicioLlamadaC2, double finLlamada2, double finCobro, String estadoCabina1, String estadoCabina2, String estadoEmpleado, boolean esperaCabina, long colaCaja, double acuAtendidos, double acuNoAtendidos, long colaMaxima, double acuTiempoLlamada, double acuGanancia, double acuPerdida, double gananciaNeta, LinkedList clientesTemporales, LinkedList clientesCaja, LinkedList clientesAsignacion){
+    public void imprimirFila(String evento, double reloj, double rndCliente, double tiempoEntreLlegada, double proxLlegadaCliente, double finAsignacionCabina, double rndLlamada, double tiempoLlamada, double inicioLlamadaC1, double finLlamada1, double inicioLlamadaC2, double finLlamada2, double finCobro, String estadoCabina1, String estadoCabina2, String estadoEmpleado, boolean esperaCabina, long colaCaja, double acuAtendidos, double acuNoAtendidos, long colaMaxima, double acuTiempoLlamada, double acuGanancia, double acuPerdida, double gananciaNeta, LinkedList<Clientes> clientesTemporales, LinkedList<Clientes> clientesCaja, LinkedList<Clientes> clientesAsignacion){
      
          Object[] fila = new Object[25];
         fila[0] = evento;
@@ -395,21 +395,73 @@ public class Principal extends javax.swing.JFrame {
         //Clientes que estan siendo atendidos o llamando por telefono
         if(clientesTemporales.size() == 0)
         {
-            
+            Object [] clientesImprimir = new Object[4];
+            clientesImprimir[0] = " - ";
+            clientesImprimir[1] = " - ";
+            clientesImprimir[2] = " - ";
+            clientesImprimir[3] = " - ";
+            modelo2.addRow(clientesImprimir);
+        }
+        else
+        {
+            Object [] clientesImprimir = new Object[4];
+            for(int i = 0; i < clientesTemporales.size(); i++)
+            {
+                clientesImprimir[0] = clientesTemporales.get(i).getId();
+                clientesImprimir[1] = clientesTemporales.get(i).getEstadoCliente();
+                clientesImprimir[2] = clientesTemporales.get(i).getHoraInicioCola();
+                clientesImprimir[3] = clientesTemporales.get(i).getDuracionLlamada();
+                modelo2.addRow(clientesImprimir);
+            }
         }
         
         //Clientes que estan esperando pagar
-        if(clientesCaja.size() == 0)
+        if(clientesAsignacion.size() == 0)
         {
-            
+            Object [] clientesImprimir = new Object[4];
+            clientesImprimir[0] = " - ";
+            clientesImprimir[1] = " - ";
+            clientesImprimir[2] = " - ";
+            clientesImprimir[3] = " - ";
+            modelo2.addRow(clientesImprimir);
+        }
+        else
+        {
+            Object [] clientesImprimir = new Object[4];
+            for(int i = 0; i < clientesAsignacion.size(); i++)
+            {
+                clientesImprimir[0] = clientesAsignacion.get(i).getId();
+                clientesImprimir[1] = clientesAsignacion.get(i).getEstadoCliente();
+                clientesImprimir[2] = clientesAsignacion.get(i).getHoraInicioCola();
+                clientesImprimir[3] = clientesAsignacion.get(i).getDuracionLlamada();
+                modelo2.addRow(clientesImprimir);
+            }
         }
         
         //Clientes que estan esperando que los asignen a una cabina
-        if(clientesAsignacion.size() == 0)
+        if(clientesCaja.size() == 0)
         {
-            
+            Object [] clientesImprimir = new Object[4];
+            clientesImprimir[0] = " - ";
+            clientesImprimir[1] = " - ";
+            clientesImprimir[2] = " - ";
+            clientesImprimir[3] = " - ";
+            modelo2.addRow(clientesImprimir);
+        }
+        else
+        {
+            Object [] clientesImprimir = new Object[4];
+            for(int i = 0; i < clientesCaja.size(); i++)
+            {
+                clientesImprimir[0] = clientesCaja.get(i).getId();
+                clientesImprimir[1] = clientesCaja.get(i).getEstadoCliente();
+                clientesImprimir[2] = clientesCaja.get(i).getHoraInicioCola();
+                clientesImprimir[3] = clientesCaja.get(i).getDuracionLlamada();
+                modelo2.addRow(clientesImprimir);
+            }
         }
         
+        /*
         //Borrar si no sirve
         if(clientesCaja.size()!=0)
         {
@@ -462,16 +514,201 @@ public class Principal extends javax.swing.JFrame {
             clientesImprimir[3] = "";
             modelo2.addRow(clientesImprimir);
             
-        }
+        }*/
     }
-    /*
+    
     //FALTA MODIFICAR
     public void simular(int desde, int hasta)
     {
         long t=0;
+        
         while(t<hasta)
         {
             Filas anterior = (Filas) simulacion.getFirst();
+            
+            if((anterior.getProxLlegadaCliente() < anterior.getFinAsignacionCabina())&& (anterior.getProxLlegadaCliente()<anterior.getFinLlamada1()) && (anterior.getProxLlegadaCliente()<anterior.getFinLlamada2()) && (anterior.getProxLlegadaCliente()<anterior.getFinCobro()))
+            {
+                //Llega cliente
+                evento = "Llega Cliente";
+                reloj = anterior.getProxLlegadaCliente();
+                rndCliente = cabina.aleatorio();
+                tiempoEntreLlegada = cabina.calcularTiempoLlegada(rndCliente);
+                proxLlegadaCliente = cabina.calcularProxLlegada(reloj, tiempoEntreLlegada);
+                //FALTA FIN ASIGNACION
+                rndLlamada = anterior.getrndDuracionLlamada();
+                tiempoLlamada = anterior.getTiempoLlamada();
+                inicioLlamadaC1 = anterior.getInicioLlamadaC1();
+                finLlamada1 = anterior.getFinLlamada1();
+                inicioLlamadaC2 = anterior.getInicioLlamadaC2();
+                finLlamada2 = anterior.getFinLlamada2();
+                finCobro = anterior.getFinCobro();
+                estadoCabina1 = anterior.getEstadoCabina1();
+                estadoCabina2 = anterior.getEstadoCabina2();
+                
+                Clientes llegado = new Clientes(-1.0, numeroCliente); 
+                
+                
+                
+                numeroCliente++;
+                if(((cabina.getEstadoCabina(0).equalsIgnoreCase("Libre") && cabina.getEstadoCabina(1).equalsIgnoreCase("Libre")) && clientesCabina.size()<=2 ) || ((cabina.getEstadoCabina(0).equalsIgnoreCase("Libre") || cabina.getEstadoCabina(1).equalsIgnoreCase("Libre")) && clientesCabina.size()==0))
+                {
+                    
+                    if(empleado.getEstadoEmpleado().equalsIgnoreCase("Libre"))
+                    {
+                        finAsignacionCabina = cabina.calcularFinAsignacionCabina(reloj);
+                        empleado.setEstadoEmpleado(2);
+                        estadoEmpleado = empleado.getEstadoEmpleado();
+                        esperaCabina = false;
+                                                
+                        llegado.setHoraInicioCola(-1.0);
+                        llegado.setEstadoCliente(0);
+                        clientesTemporales.addLast(llegado);
+                    }
+                    else
+                    {
+                        finAsignacionCabina = anterior.getFinAsignacionCabina();
+                        esperaCabina = true;
+                        estadoEmpleado = anterior.getEstadoEmpleado();
+                        llegado.setHoraInicioCola(reloj);
+                        llegado.setEstadoCliente(1);
+                        clientesCabina.addLast(llegado);
+                    }
+                        acuPerdida = anterior.getAcuPerdida();
+                        gananciaNeta = anterior.getGananciaNeta();
+                        acuNoAtendidos = anterior.getAcuNoAtendidos();
+                }
+                else
+                {
+                    acuNoAtendidos = anterior.getAcuNoAtendidos()+1;
+                    acuPerdida = anterior.getAcuPerdida()+0.50;
+                    gananciaNeta = anterior.getAcuGanancia()-acuPerdida;
+                    esperaCabina = false;
+                    estadoEmpleado = anterior.getEstadoEmpleado();
+                }
+                colaCaja = anterior.getColaCliente();
+                acuAtendidos = anterior.getAcuAtendidos();
+                colaMaxima = anterior.getColaMaxima();
+                acuTiempoLlamada = anterior.getAcuTiempoLlamada();
+                acuGanancia = anterior.getAcuGanancia();
+                        
+            }
+            else
+            {
+                if((anterior.getFinAsignacionCabina() < anterior.getFinLlamada1()) && (anterior.getFinAsignacionCabina() < anterior.getFinLlamada2()) && (anterior.getFinAsignacionCabina() < anterior.getFinCobro()))
+                {
+                    //Asignando
+                    evento = "Fin Asignacion";
+                    reloj = anterior.getFinAsignacionCabina();
+                    rndCliente = -1.0;
+                    tiempoEntreLlegada = -1.0;
+                    proxLlegadaCliente = anterior.getProxLlegadaCliente();
+                    
+                    Clientes asignado = new Clientes(-1.0,-1);
+                    
+                    for (int i = 0; i < clientesTemporales.size(); i++) {
+                        if(clientesTemporales.get(i).getEstadoCliente().equalsIgnoreCase("Siendo Asignado"))
+                        {
+                            asignado.setHoraInicioCola(reloj);
+                            asignado.setEstadoCliente(4);
+                            clientesTemporales.set(i, asignado);
+                            break;
+                        }
+                    }
+                    
+                    if(cabina.getEstadoCabina(0).equalsIgnoreCase("Libre") || cabina.getEstadoCabina(1).equalsIgnoreCase("Libre"))
+                    {
+                        rndLlamada = cabina.aleatorio();
+                        tiempoLlamada = cabina.calcularTiempoLlamada(rndLlamada);
+                        
+                        if(cabina.getEstadoCabina(0).equalsIgnoreCase("Libre"))
+                        {
+                            inicioLlamadaC1 = reloj;
+                            finLlamada1 = cabina.calcularFinLlamada(tiempoLlamada, reloj);
+                            inicioLlamadaC2 = anterior.getInicioLlamadaC2();
+                            finLlamada2 = anterior.getFinLlamada2();
+                            cabina.setEstadoCabina(0, 1);
+                            estadoCabina1 = cabina.getEstadoCabina(0);
+                            estadoCabina2 = anterior.getEstadoCabina2();
+                        }
+                        else
+                        {
+                            inicioLlamadaC2 = reloj;
+                            finLlamada2 = cabina.calcularFinLlamada(tiempoLlamada, reloj);
+                            inicioLlamadaC1 = anterior.getInicioLlamadaC1();
+                            finLlamada1 = anterior.getFinLlamada1();
+                            cabina.setEstadoCabina(1, 1);
+                            estadoCabina2 = cabina.getEstadoCabina(0);
+                            estadoCabina1 = anterior.getEstadoCabina1();
+                        }
+                        
+                        if(clientesCabina.size()!=0)
+                        {
+                            Clientes proximoAsignarCabina = new Clientes(-1.0, -1);
+                            proximoAsignarCabina = clientesCabina.removeFirst();
+                            proximoAsignarCabina.setEstadoCliente(0);
+                            proximoAsignarCabina.setHoraInicioCola(-1.0);
+                            clientesTemporales.addLast(proximoAsignarCabina);
+                            empleado.setEstadoEmpleado(2);
+                            estadoEmpleado = empleado.getEstadoEmpleado();
+                            if(clientesCabina.size()==0)
+                            {
+                                esperaCabina = false;
+                            }
+                            else
+                            {
+                                esperaCabina = true;
+                            }
+                        }
+                        else
+                        {
+                            if(clientesCaja.size()!=0)
+                            {
+                                Clientes proximoCobrar = new Clientes(-1.0, -1);
+                                proximoCobrar = clientesCaja.removeFirst();
+                                proximoCobrar.setEstadoCliente(5);
+                                proximoCobrar.setHoraInicioCola(-1.0);
+                                clientesTemporales.addLast(proximoCobrar);
+                                empleado.setEstadoEmpleado(1);
+                                estadoEmpleado = empleado.getEstadoEmpleado();
+                                colaCaja = anterior.getColaCliente()-1;
+                            }
+                            else
+                            {
+                                empleado.setEstadoEmpleado(0);
+                                estadoEmpleado = empleado.getEstadoEmpleado();
+                                esperaCabina = false;
+                            }
+                        }
+                        
+                        acuAtendidos = anterior.getAcuAtendidos();
+                        acuNoAtendidos = anterior.getAcuNoAtendidos();
+                        colaMaxima = anterior.getColaMaxima();
+                        acuTiempoLlamada = anterior.getAcuTiempoLlamada();
+                        acuGanancia = anterior.getAcuGanancia();
+                        acuPerdida = anterior.getAcuPerdida();
+                        gananciaNeta = anterior.getGananciaNeta();
+                }
+                else
+                {
+                    if((anterior.getFinLlamada1() < anterior.getFinLlamada2()) && (anterior.getFinLlamada1() < anterior.getFinCobro()))
+                    {
+                        //Fin llamada C1
+                    }
+                    else
+                    {
+                        if(anterior.getFinLlamada2() < anterior.getFinCobro())
+                        {
+                            //Fin llamada C2
+                        }
+                        else
+                        {
+                            //Fin Cobro
+                        }
+                    }
+                }
+            }
+            }
+                /*
             if( (anterior.getProxLlegadaCliente()< anterior.getFinCobroCajero() || anterior.getFinCobroCajero()< 0) && (anterior.getProximaLlegadaCliente()>=0) )
             {
                 reloj = anterior.getProximaLlegadaCliente();
@@ -641,9 +878,9 @@ public class Principal extends javax.swing.JFrame {
                         }
                     }
                 }
-            }
+            }*/
             
-            acumuladorAyudante = this.truncador(acumuladorAyudante);
+            /*acumuladorAyudante = this.truncador(acumuladorAyudante);
             acumuladorEspera = this.truncador(acumuladorEspera);
             tiempoEsperaMaximo = this.truncador(tiempoEsperaMaximo);
             
@@ -667,9 +904,9 @@ public class Principal extends javax.swing.JFrame {
             {
                 simulacion.removeFirst();
             }
-            t++;
+            t++;*/
         }
-    }*/
+    }
     
     public double truncador(double valorATruncar)
     {
