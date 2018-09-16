@@ -550,7 +550,7 @@ public class Principal extends javax.swing.JFrame {
                 
                 
                 numeroCliente++;
-                if(((cabina.getEstadoCabina(0).equalsIgnoreCase("Libre") && cabina.getEstadoCabina(1).equalsIgnoreCase("Libre")) && clientesCabina.size()<=2 ) || ((cabina.getEstadoCabina(0).equalsIgnoreCase("Libre") || cabina.getEstadoCabina(1).equalsIgnoreCase("Libre")) && clientesCabina.size()==0))
+                if(((cabina.getEstadoCabina(0).equalsIgnoreCase("Libre") && cabina.getEstadoCabina(1).equalsIgnoreCase("Libre")) && clientesCabina.size()<=1 ) || ((cabina.getEstadoCabina(0).equalsIgnoreCase("Libre") || cabina.getEstadoCabina(1).equalsIgnoreCase("Libre")) && clientesCabina.size()==0))
                 {
                     
                     if(empleado.getEstadoEmpleado().equalsIgnoreCase("Libre"))
@@ -726,6 +726,29 @@ public class Principal extends javax.swing.JFrame {
                         esperaCabina = anterior.isEsperaCabina();
                         
                         //manejar empleado, cliente finalizado, fin cobro y cola maxima
+                        
+                        if(anterior.getColaCliente()!=0)
+                        {
+                            //Empleado ocupado
+                            colaCaja = anterior.getColaCliente() + 1;
+                            if(colaCaja > anterior.getColaMaxima())
+                            {
+                                colaMaxima = colaCaja;
+                            }
+                            else
+                            {
+                                colaMaxima = anterior.getColaMaxima();
+                            }
+                            llamoEnC1.setHoraInicioLlamada(reloj);
+                            clientesCaja.addLast(llamoEnC1);
+                            clientesTemporales.remove(posicion);
+                            estadoEmpleado = anterior.getEstadoEmpleado();
+                        }
+                        else
+                        {
+                            //Empleado libre
+                        }
+                        
                         
                         acuAtendidos = anterior.getAcuAtendidos();
                         acuNoAtendidos = anterior.getAcuNoAtendidos();
