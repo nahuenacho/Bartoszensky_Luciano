@@ -84,6 +84,24 @@ public class Cabina {
         this.c = c;
     }
 
+    public double calcularCostoLlamada(double duracionLlamada)
+    {
+        if(duracionLlamada <= 5.0)
+        {
+            return 0.5;
+        }
+        else
+        {
+            Double excedente = (duracionLlamada - 5.0);
+            
+            int minutos = excedente.intValue()*60;
+            Double segundos = (excedente - excedente.intValue())*100;
+            int segund = segundos.intValue();
+            int total = minutos + segund;
+            return 0.5+(total*0.02);
+            
+        }
+    }
     /*public Estado getEstado() {
         return estado;
     }

@@ -4,7 +4,9 @@ import Soporte.Cabina;
 import Soporte.Clientes;
 import Soporte.Empleado;
 import Soporte.Filas;
+import java.util.HashSet;
 import java.util.LinkedList;
+import java.util.Set;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
@@ -20,6 +22,8 @@ public class Principal extends javax.swing.JFrame {
     private boolean esperaCabina;
     private LinkedList<Clientes> clientesTemporales, clientesCaja, clientesCabina;
     private LinkedList simulacion;
+    
+    double porcentajeNoConsigueCabina, colaMaximaCaja, tiempoPromedioComunicaciones, ganancia, gananciaTotal;
     
     private int numeroCliente = 0;
     
@@ -264,13 +268,12 @@ public class Principal extends javax.swing.JFrame {
 
     //Boton para ver los resultados 
     private void txt_InformeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txt_InformeActionPerformed
-        String resultado[] = new String[6];
-        resultado[0] = "Porcentaje de personas que no consiguen cabina:  " + "%";
-        resultado[1] = "Cola máxima en caja:  " ;
-        resultado[2] = "Tiempo promedio de las comunicaciones:  " ;
-        resultado[3] = "Promedio Espera en Cola:  " ;
-        resultado[4] = "Total de dinero acumulado en caja:  " +"$";
-        resultado[5] = "Ganancia neta considerando el costo de perder clientes:  " +"$";
+        String resultado[] = new String[5];
+        resultado[0] = "Porcentaje de personas que no consiguen cabina:  " + porcentajeNoConsigueCabina + "%";
+        resultado[1] = "Cola máxima en caja:  " + colaMaximaCaja;
+        resultado[2] = "Tiempo promedio de las comunicaciones:  " + tiempoPromedioComunicaciones;
+        resultado[3] = "Total de dinero acumulado en caja:  " + ganancia + "$";
+        resultado[4] = "Ganancia neta considerando el costo de perder clientes:  " + gananciaTotal +"$";
         JOptionPane.showMessageDialog(null, resultado);
     }//GEN-LAST:event_txt_InformeActionPerformed
 
@@ -546,8 +549,9 @@ public class Principal extends javax.swing.JFrame {
                 estadoCabina2 = anterior.getEstadoCabina2();
                 
                 Clientes llegado = new Clientes(-1.0, numeroCliente); 
-                
-                
+                clientesCabina = anterior.getClientesTemporales();
+                clientesCaja = anterior.getClientesCaja();
+                clientesTemporales = anterior.getClientesTemporales();
                 
                 numeroCliente++;
                 if(((cabina.getEstadoCabina(0).equalsIgnoreCase("Libre") && cabina.getEstadoCabina(1).equalsIgnoreCase("Libre")) && clientesCabina.size()<=1 ) || ((cabina.getEstadoCabina(0).equalsIgnoreCase("Libre") || cabina.getEstadoCabina(1).equalsIgnoreCase("Libre")) && clientesCabina.size()==0))
@@ -602,6 +606,10 @@ public class Principal extends javax.swing.JFrame {
                     rndCliente = -1.0;
                     tiempoEntreLlegada = -1.0;
                     proxLlegadaCliente = anterior.getProxLlegadaCliente();
+                    clientesCabina = anterior.getClientesTemporales();
+                    clientesCaja = anterior.getClientesCaja();
+                    clientesTemporales = anterior.getClientesTemporales();
+                    
                     
                     Clientes asignado = new Clientes(-1.0,-1);
                     
@@ -629,6 +637,8 @@ public class Principal extends javax.swing.JFrame {
                             cabina.setEstadoCabina(0, 1);
                             estadoCabina1 = cabina.getEstadoCabina(0);
                             estadoCabina2 = anterior.getEstadoCabina2();
+                            asignado.setDuracionLlamada(finLlamada1-reloj);
+                            
                         }
                         else
                         {
@@ -639,6 +649,7 @@ public class Principal extends javax.swing.JFrame {
                             cabina.setEstadoCabina(1, 1);
                             estadoCabina2 = cabina.getEstadoCabina(0);
                             estadoCabina1 = anterior.getEstadoCabina1();
+                            asignado.setDuracionLlamada(finLlamada2-reloj);
                         }
                         
                         if(clientesCabina.size()!=0)
@@ -696,6 +707,8 @@ public class Principal extends javax.swing.JFrame {
                         //Fin llamada C1
                         evento = "Fin Llamada C1";
                         reloj = anterior.getFinLlamada1();
+                        clientesTemporales = anterior.getClientesTemporales();
+                        clientesCaja = anterior.getClientesCaja();
                         
                         long posicion = 0;
                         
@@ -740,16 +753,25 @@ public class Principal extends javax.swing.JFrame {
                                 colaMaxima = anterior.getColaMaxima();
                             }
                             llamoEnC1.setHoraInicioLlamada(reloj);
+                            llamoEnC1.setEstadoCliente(3);
                             clientesCaja.addLast(llamoEnC1);
                             clientesTemporales.remove(posicion);
                             estadoEmpleado = anterior.getEstadoEmpleado();
+                            finCobro = anterior.getFinCobro();
                         }
                         else
                         {
                             //Empleado libre
+                            empleado.setEstadoEmpleado(0);
+                            estadoEmpleado = empleado.getEstadoEmpleado();
+                            colaCaja = anterior.getColaCliente();
+                            colaMaxima = anterior.getColaMaxima();
+                            llamoEnC1.setEstadoCliente(5);
+                            clientesTemporales.set((int)posicion, llamoEnC1);
+                            finCobro = cabina.calcularFinCobro(reloj);
                         }
                         
-                        
+                        clientesCabina = anterior.getClientesEsperandoAsignacion();
                         acuAtendidos = anterior.getAcuAtendidos();
                         acuNoAtendidos = anterior.getAcuNoAtendidos();
                         acuTiempoLlamada = anterior.getTiempoLlamada();
@@ -766,6 +788,8 @@ public class Principal extends javax.swing.JFrame {
                             
                             evento = "Fin Llamada C2";
                             reloj = anterior.getFinLlamada2();
+                            clientesTemporales = anterior.getClientesTemporales();
+                            clientesCaja = anterior.getClientesCaja();
                         
                             long posicion = 0;
                         
@@ -778,7 +802,7 @@ public class Principal extends javax.swing.JFrame {
                                     llamoEnC2 = clientesTemporales.get(i);
                                 }
                             
-                        }
+                            }
                         
                             rndCliente = -1.0;
                             tiempoEntreLlegada = -1.0;
@@ -786,17 +810,48 @@ public class Principal extends javax.swing.JFrame {
                             finAsignacionCabina = anterior.getFinAsignacionCabina();
                             rndLlamada = -1.0;
                             tiempoLlamada = -1.0;
-                            inicioLlamadaC1 = -1.0;
-                            finLlamada1 = -1.0;
-                            inicioLlamadaC2 = anterior.getInicioLlamadaC2();
-                            finLlamada2 = anterior.getFinLlamada2();
+                            inicioLlamadaC1 = anterior.getInicioLlamadaC1();
+                            finLlamada1 = anterior.getFinLlamada1();
+                            inicioLlamadaC2 = -1.0;
+                            finLlamada2 = -1.0;
                             cabina.setEstadoCabina(1, 0);
                             estadoCabina2 = cabina.getEstadoCabina(1);
                             estadoCabina1 = anterior.getEstadoCabina1();
                             esperaCabina = anterior.isEsperaCabina();
-                        
+                            
                             //manejar empleado, cliente finalizado, fin cobro y cola maxima
+                            if(anterior.getColaCliente()!=0)
+                            {
+                                //Empleado ocupado
+                                colaCaja = anterior.getColaCliente() + 1;
+                                if(colaCaja > anterior.getColaMaxima())
+                                {
+                                    colaMaxima = colaCaja;
+                                }
+                                else
+                                {
+                                    colaMaxima = anterior.getColaMaxima();
+                                }
+                                llamoEnC2.setHoraInicioLlamada(reloj);
+                                llamoEnC2.setEstadoCliente(3);
+                                clientesCaja.addLast(llamoEnC2);
+                                clientesTemporales.remove(posicion);
+                                estadoEmpleado = anterior.getEstadoEmpleado();
+                                finCobro = anterior.getFinCobro();
+                            }
+                            else
+                            {
+                                //Empleado libre
+                                empleado.setEstadoEmpleado(0);
+                                estadoEmpleado = empleado.getEstadoEmpleado();
+                                colaCaja = anterior.getColaCliente();
+                                colaMaxima = anterior.getColaMaxima();
+                                llamoEnC2.setEstadoCliente(5);
+                                clientesTemporales.set((int)posicion, llamoEnC2);
+                                finCobro = cabina.calcularFinCobro(reloj);
+                            }
                         
+                            clientesCabina = anterior.getClientesEsperandoAsignacion();
                             acuAtendidos = anterior.getAcuAtendidos();
                             acuNoAtendidos = anterior.getAcuNoAtendidos();
                             acuTiempoLlamada = anterior.getTiempoLlamada();
@@ -808,6 +863,84 @@ public class Principal extends javax.swing.JFrame {
                         else
                         {
                             //Fin Cobro
+                            clientesCabina = anterior.getClientesTemporales();
+                            clientesCaja = anterior.getClientesCaja();
+                            clientesTemporales = anterior.getClientesTemporales();
+                            
+                            evento = "Fin Cobro";
+                            reloj = anterior.getFinCobro();
+                            rndCliente = -1.0;
+                            tiempoEntreLlegada = -1.0;
+                            proxLlegadaCliente = anterior.getProxLlegadaCliente();
+                            finAsignacionCabina = anterior.getFinAsignacionCabina();
+                            rndLlamada = -1.0;
+                            tiempoLlamada = -1.0;
+                            inicioLlamadaC1 = anterior.getInicioLlamadaC1();
+                            finLlamada1 = anterior.getFinLlamada1();
+                            inicioLlamadaC2 = anterior.getInicioLlamadaC2();
+                            finLlamada2 = anterior.getFinLlamada2();
+                            estadoCabina1 = anterior.getEstadoCabina1();
+                            estadoCabina2 = anterior.getEstadoCabina2();
+                            colaCaja = anterior.getColaCliente();
+                            
+                            Clientes pagando = new Clientes(-1.0,0);
+                            for (int i = 0; i < clientesTemporales.size(); i++) 
+                            {
+                                if(clientesTemporales.get(i).getEstadoCliente().equalsIgnoreCase("Pagando"))
+                                {
+                                    pagando = clientesTemporales.remove(i);
+                                    break;
+                                }
+                            }
+                            
+                            acuAtendidos = anterior.getAcuAtendidos() +1;
+                            acuNoAtendidos = anterior.getAcuNoAtendidos();
+                            colaMaxima = anterior.getColaMaxima();
+                            acuTiempoLlamada = anterior.getAcuTiempoLlamada()+pagando.getDuracionLlamada();
+                            acuGanancia = cabina.calcularCostoLlamada(pagando.getDuracionLlamada()); //Llamar metodo cobro
+                            acuPerdida = anterior.getAcuPerdida();
+                            gananciaNeta = acuGanancia - acuPerdida;
+                            //finTiempo cobro
+                            //Depende de cola cabina
+                            esperaCabina = anterior.isEsperaCabina();
+                            Clientes esperaCab = new Clientes(-1.0,0);
+                            if(esperaCabina == true)
+                            {
+                                esperaCab = clientesCabina.removeFirst();
+                                clientesTemporales.addLast(esperaCab);
+                                empleado.setEstadoEmpleado(2);
+                                estadoEmpleado = empleado.getEstadoEmpleado();
+                                if(clientesCabina.size()!=0)
+                                {
+                                    esperaCabina = true;
+                                }
+                                else
+                                {
+                                    esperaCabina = false;
+                                }
+                            }
+                            else
+                            {
+                                if(colaCaja != 0)
+                                {
+                                    //Hay clientes para pagar
+                                    Clientes porPagar = new Clientes(-1.0,0);
+                                    porPagar = clientesCaja.removeFirst();
+                                    clientesTemporales.addLast(porPagar);
+                                    empleado.setEstadoEmpleado(1);
+                                    estadoEmpleado = empleado.getEstadoEmpleado();
+                                    colaCaja = colaCaja -1;
+                                }
+                                else
+                                {
+                                    //No hay clientes para pagar
+                                    empleado.setEstadoEmpleado(0);
+                                    estadoEmpleado = empleado.getEstadoEmpleado();
+                                }
+                            }
+                            
+                            
+                            
                         }
                     }
                 }
@@ -988,20 +1121,27 @@ public class Principal extends javax.swing.JFrame {
             /*acumuladorAyudante = this.truncador(acumuladorAyudante);
             acumuladorEspera = this.truncador(acumuladorEspera);
             tiempoEsperaMaximo = this.truncador(tiempoEsperaMaximo);
+            */
             
-            Filas nueva = new Filas (reloj, proximoEvento, rndCliente, tiempoLlegada, proximaLlegada, rndCajero, tiempoCobro,finCobro, ayudante, horaInicioAyudante, estadoCajero, colaCajero, distribucionCajero, acumuladorAyudante, acumuladorEspera, cantidadClientesAtendidos, tiempoEsperaMaximo, clientesCaja, clientesTemporales);
+            porcentajeNoConsigueCabina = this.truncador((acuNoAtendidos/(acuNoAtendidos+acuAtendidos))*100);
+            colaMaximaCaja = this.truncador(colaMaxima);
+            tiempoPromedioComunicaciones = this.truncador(acuTiempoLlamada/(acuAtendidos));
+            ganancia = this.truncador(acuGanancia);
+            gananciaTotal = this.truncador(gananciaNeta);
+            
+            Filas nueva = new Filas(evento,  reloj,  rndCliente,  tiempoEntreLlegada,  proxLlegadaCliente,  finAsignacionCabina,  rndLlamada, tiempoLlamada, inicioLlamadaC1, finLlamada1, inicioLlamadaC2, finLlamada2,  finCobro,  estadoCabina1,  estadoCabina2,  estadoEmpleado, esperaCabina, colaCaja, acuAtendidos, acuNoAtendidos, colaMaxima, acuTiempoLlamada, acuGanancia,  acuPerdida,  gananciaNeta, clientesTemporales,  clientesCaja, clientesCabina);
             if(desde == 0)
             {
                 if(t >= desde && t <hasta)
                 {
-                    this.imprimirFila(reloj, proximoEvento, rndCliente, tiempoLlegada, proximaLlegada, rndCajero, tiempoCobro,finCobro, ayudante, horaInicioAyudante, estadoCajero, colaCajero, distribucionCajero, acumuladorAyudante, acumuladorEspera, cantidadClientesAtendidos, tiempoEsperaMaximo, clientesTemporales);
+                    this.imprimirFila(evento,  reloj,  rndCliente,  tiempoEntreLlegada,  proxLlegadaCliente,  finAsignacionCabina,  rndLlamada, tiempoLlamada, inicioLlamadaC1, finLlamada1, inicioLlamadaC2, finLlamada2,  finCobro,  estadoCabina1,  estadoCabina2,  estadoEmpleado,  esperaCabina, colaCaja,  acuAtendidos,  acuNoAtendidos, colaMaxima, acuTiempoLlamada,  acuGanancia,  acuPerdida, gananciaNeta, clientesTemporales,clientesCaja, clientesCabina);
                 }
             }
             else
             {
                 if(t >= (desde-1) && t <hasta)
                 {
-                    this.imprimirFila(reloj, proximoEvento, rndCliente, tiempoLlegada, proximaLlegada, rndCajero, tiempoCobro,finCobro, ayudante, horaInicioAyudante, estadoCajero, colaCajero, distribucionCajero, acumuladorAyudante, acumuladorEspera, cantidadClientesAtendidos, tiempoEsperaMaximo, clientesTemporales);
+                    this.imprimirFila(evento,  reloj,  rndCliente,  tiempoEntreLlegada,  proxLlegadaCliente,  finAsignacionCabina,  rndLlamada, tiempoLlamada, inicioLlamadaC1, finLlamada1, inicioLlamadaC2, finLlamada2,  finCobro,  estadoCabina1,  estadoCabina2,  estadoEmpleado,  esperaCabina, colaCaja,  acuAtendidos,  acuNoAtendidos, colaMaxima, acuTiempoLlamada,  acuGanancia,  acuPerdida, gananciaNeta, clientesTemporales,clientesCaja, clientesCabina);
                 }
             }
             simulacion.addLast(nueva);
@@ -1009,7 +1149,7 @@ public class Principal extends javax.swing.JFrame {
             {
                 simulacion.removeFirst();
             }
-            t++;*/
+            t++;
         }
     }
     
