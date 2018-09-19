@@ -23,7 +23,11 @@ public class Principal extends javax.swing.JFrame {
     private LinkedList<Clientes> clientesTemporales, clientesCaja, clientesCabina;
     private LinkedList simulacion;
     
-    double porcentajeNoConsigueCabina, colaMaximaCaja, tiempoPromedioComunicaciones, ganancia, gananciaTotal;
+    double porcentajeNoConsigueCabina= 0;
+    double colaMaximaCaja = 0;
+    double tiempoPromedioComunicaciones = 0;
+    double ganancia = 0;
+    double gananciaTotal = 0;
     
     private int numeroCliente = 0;
     
@@ -325,12 +329,13 @@ public class Principal extends javax.swing.JFrame {
         {
             this.imprimirFila(evento,  reloj,  rndCliente,  tiempoEntreLlegada,  proxLlegadaCliente,  finAsignacionCabina,  rndLlamada, tiempoLlamada, inicioLlamadaC1, finLlamada1, inicioLlamadaC2, finLlamada2,  finCobro,  estadoCabina1,  estadoCabina2,  estadoEmpleado,  esperaCabina, colaCaja,  acuAtendidos,  acuNoAtendidos, colaMaxima, acuTiempoLlamada,  acuGanancia,  acuPerdida, gananciaNeta, clientesTemporales,clientesCaja, clientesCabina);
         }
+        simular(mostrarDesde, mostrarHasta);
     }
     
     //FALTA MODIFICAR
     public void imprimirFila(String evento, double reloj, double rndCliente, double tiempoEntreLlegada, double proxLlegadaCliente, double finAsignacionCabina, double rndLlamada, double tiempoLlamada, double inicioLlamadaC1, double finLlamada1, double inicioLlamadaC2, double finLlamada2, double finCobro, String estadoCabina1, String estadoCabina2, String estadoEmpleado, boolean esperaCabina, long colaCaja, double acuAtendidos, double acuNoAtendidos, long colaMaxima, double acuTiempoLlamada, double acuGanancia, double acuPerdida, double gananciaNeta, LinkedList<Clientes> clientesTemporales, LinkedList<Clientes> clientesCaja, LinkedList<Clientes> clientesAsignacion){
      
-         Object[] fila = new Object[25];
+        Object[] fila = new Object[25];
         fila[0] = evento;
         fila[1] = reloj;
         
@@ -528,9 +533,11 @@ public class Principal extends javax.swing.JFrame {
         while(t<hasta)
         {
             Filas anterior = (Filas) simulacion.getFirst();
-            
-            if((anterior.getProxLlegadaCliente() < anterior.getFinAsignacionCabina())&& (anterior.getProxLlegadaCliente()<anterior.getFinLlamada1()) && (anterior.getProxLlegadaCliente()<anterior.getFinLlamada2()) && (anterior.getProxLlegadaCliente()<anterior.getFinCobro()))
+            System.out.println("t");
+            System.out.println(simulacion.size());
+            if((anterior.getProxLlegadaCliente() < anterior.getFinAsignacionCabina() || anterior.getFinAsignacionCabina()<0)&& (anterior.getProxLlegadaCliente()<anterior.getFinLlamada1() || anterior.getFinLlamada1()<0) && (anterior.getProxLlegadaCliente()<anterior.getFinLlamada2() || anterior.getFinLlamada2()<0) && (anterior.getProxLlegadaCliente()<anterior.getFinCobro() || anterior.getFinCobro()<0))
             {
+                System.out.println("llegada cliente");
                 //Llega cliente
                 evento = "Llega Cliente";
                 reloj = anterior.getProxLlegadaCliente();
@@ -549,7 +556,7 @@ public class Principal extends javax.swing.JFrame {
                 estadoCabina2 = anterior.getEstadoCabina2();
                 
                 Clientes llegado = new Clientes(-1.0, numeroCliente); 
-                clientesCabina = anterior.getClientesTemporales();
+                clientesCabina = anterior.getClientesEsperandoAsignacion();
                 clientesCaja = anterior.getClientesCaja();
                 clientesTemporales = anterior.getClientesTemporales();
                 
@@ -598,15 +605,17 @@ public class Principal extends javax.swing.JFrame {
             }
             else
             {
-                if((anterior.getFinAsignacionCabina() < anterior.getFinLlamada1()) && (anterior.getFinAsignacionCabina() < anterior.getFinLlamada2()) && (anterior.getFinAsignacionCabina() < anterior.getFinCobro()))
+                if(((anterior.getFinAsignacionCabina() < anterior.getFinLlamada1()) || (anterior.getFinLlamada1()<0)) && ((anterior.getFinAsignacionCabina() < anterior.getFinLlamada2()) || (anterior.getFinLlamada2()<0)) && ((anterior.getFinAsignacionCabina() < anterior.getFinCobro()) || (anterior.getFinCobro()<0)))
                 {
+                    System.out.println("asignacion");
                     //Asignando
                     evento = "Fin Asignacion";
                     reloj = anterior.getFinAsignacionCabina();
                     rndCliente = -1.0;
                     tiempoEntreLlegada = -1.0;
                     proxLlegadaCliente = anterior.getProxLlegadaCliente();
-                    clientesCabina = anterior.getClientesTemporales();
+                    finAsignacionCabina = -1.0;
+                    clientesCabina = anterior.getClientesEsperandoAsignacion();
                     clientesCaja = anterior.getClientesCaja();
                     clientesTemporales = anterior.getClientesTemporales();
                     
@@ -661,6 +670,7 @@ public class Principal extends javax.swing.JFrame {
                             clientesTemporales.addLast(proximoAsignarCabina);
                             empleado.setEstadoEmpleado(2);
                             estadoEmpleado = empleado.getEstadoEmpleado();
+                            System.out.println("size" + clientesCabina.size());
                             if(clientesCabina.size()==0)
                             {
                                 esperaCabina = false;
@@ -682,6 +692,7 @@ public class Principal extends javax.swing.JFrame {
                                 empleado.setEstadoEmpleado(1);
                                 estadoEmpleado = empleado.getEstadoEmpleado();
                                 colaCaja = anterior.getColaCliente()-1;
+                                esperaCabina = false;
                             }
                             else
                             {
@@ -699,11 +710,13 @@ public class Principal extends javax.swing.JFrame {
                         acuGanancia = anterior.getAcuGanancia();
                         acuPerdida = anterior.getAcuPerdida();
                         gananciaNeta = anterior.getGananciaNeta();
+                        System.out.println("fin asign: "+finAsignacionCabina);
                 }
                 else
                 {
-                    if((anterior.getFinLlamada1() < anterior.getFinLlamada2()) && (anterior.getFinLlamada1() < anterior.getFinCobro()))
+                    if(((anterior.getFinLlamada1() < anterior.getFinLlamada2() || anterior.getFinLlamada2()<0) && (anterior.getFinLlamada1() < anterior.getFinCobro() ||anterior.getFinCobro()<0))&&(anterior.getFinLlamada1()>0))
                     {
+                        System.out.println("finC1");
                         //Fin llamada C1
                         evento = "Fin Llamada C1";
                         reloj = anterior.getFinLlamada1();
@@ -782,10 +795,10 @@ public class Principal extends javax.swing.JFrame {
                     }
                     else
                     {
-                        if(anterior.getFinLlamada2() < anterior.getFinCobro())
+                        if((anterior.getFinLlamada2() < anterior.getFinCobro() || anterior.getFinCobro()<0) && (anterior.getFinLlamada2()>0))
                         {
                             //Fin llamada C2
-                            
+                            System.out.println("fin c2");
                             evento = "Fin Llamada C2";
                             reloj = anterior.getFinLlamada2();
                             clientesTemporales = anterior.getClientesTemporales();
@@ -862,11 +875,13 @@ public class Principal extends javax.swing.JFrame {
                         }
                         else
                         {
-                            //Fin Cobro
+                            if(anterior.getFinCobro()>0)
+                            {
+                                //Fin Cobro
                             clientesCabina = anterior.getClientesTemporales();
                             clientesCaja = anterior.getClientesCaja();
                             clientesTemporales = anterior.getClientesTemporales();
-                            
+                            System.out.println("fin cobro");
                             evento = "Fin Cobro";
                             reloj = anterior.getFinCobro();
                             rndCliente = -1.0;
@@ -938,8 +953,7 @@ public class Principal extends javax.swing.JFrame {
                                     estadoEmpleado = empleado.getEstadoEmpleado();
                                 }
                             }
-                            
-                            
+                            }
                             
                         }
                     }
@@ -1149,6 +1163,7 @@ public class Principal extends javax.swing.JFrame {
             {
                 simulacion.removeFirst();
             }
+            
             t++;
         }
     }
