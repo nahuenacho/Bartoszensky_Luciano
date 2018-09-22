@@ -277,7 +277,7 @@ public class Principal extends javax.swing.JFrame {
         resultado[1] = "Cola máxima en caja:  " + colaMaximaCaja;
         resultado[2] = "Tiempo promedio de las comunicaciones:  " + tiempoPromedioComunicaciones;
         resultado[3] = "Total de dinero acumulado en caja:  " + ganancia + "$";
-        resultado[4] = "Ganancia neta considerando el costo de perder clientes:  " + gananciaTotal +"$";
+        resultado[4] = "Ganancia neta:  " + gananciaTotal +"$";
         JOptionPane.showMessageDialog(null, resultado);
     }//GEN-LAST:event_txt_InformeActionPerformed
 
@@ -520,7 +520,6 @@ public class Principal extends javax.swing.JFrame {
                 clientesCabina = anterior.getClientesEsperandoAsignacion();
                 clientesCaja = anterior.getClientesCaja();
                 clientesTemporales = anterior.getClientesTemporales();
-                
                 numeroCliente++;
                 if(((cabina.getEstadoCabina(0).equalsIgnoreCase("Libre") && cabina.getEstadoCabina(1).equalsIgnoreCase("Libre")) && clientesCabina.size()<=1 ) || ((cabina.getEstadoCabina(0).equalsIgnoreCase("Libre") || cabina.getEstadoCabina(1).equalsIgnoreCase("Libre")) && clientesCabina.size()==0))
                 {
@@ -561,6 +560,7 @@ public class Principal extends javax.swing.JFrame {
                     llegado.setHoraInicioCola(reloj);
                     llegado.setEstadoCliente(2);
                     clientesTemporales.addLast(llegado);
+                    esperaCabina = anterior.isEsperaCabina();
                 }
                 colaCaja = anterior.getColaCliente();
                 acuAtendidos = anterior.getAcuAtendidos();
@@ -706,6 +706,7 @@ public class Principal extends javax.swing.JFrame {
                             {
                                 posicion = i;
                                 llamoEnC1 = clientesTemporales.get(i);
+                                break;
                             }
                             
                         }
@@ -742,7 +743,7 @@ public class Principal extends javax.swing.JFrame {
                             llamoEnC1.setHoraInicioCola(reloj);
                             llamoEnC1.setEstadoCliente(3);
                             clientesCaja.addLast(llamoEnC1);
-                            clientesTemporales.remove(posicion);
+                            clientesTemporales.remove(llamoEnC1);
                             estadoEmpleado = anterior.getEstadoEmpleado();
                             finCobro = anterior.getFinCobro();
                         }
@@ -785,6 +786,7 @@ public class Principal extends javax.swing.JFrame {
                                 {
                                     posicion = i;
                                     llamoEnC2 = clientesTemporales.get(i);
+                                    break;
                                 }
                             
                             }
@@ -820,7 +822,7 @@ public class Principal extends javax.swing.JFrame {
                                 llamoEnC2.setHoraInicioCola(reloj);
                                 llamoEnC2.setEstadoCliente(3);
                                 clientesCaja.addLast(llamoEnC2);
-                                clientesTemporales.remove(posicion);
+                                clientesTemporales.remove(llamoEnC2); //iba posicion
                                 estadoEmpleado = anterior.getEstadoEmpleado();
                                 finCobro = anterior.getFinCobro();
                             }
@@ -889,7 +891,7 @@ public class Principal extends javax.swing.JFrame {
                                 //esperaCabina = anterior.isEsperaCabina();
                                 Clientes esperaCab = new Clientes(-1.0,0);
                                 
-                                if(anterior.isEsperaCabina() == true)
+                                if(!clientesCabina.isEmpty()) //Antes era esperacabina = true
                                 {
                                     esperaCab = clientesCabina.removeFirst();
                                     esperaCab.setEstadoCliente(0);
