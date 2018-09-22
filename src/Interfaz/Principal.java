@@ -123,7 +123,7 @@ public class Principal extends javax.swing.JFrame {
                 {null, null, null, null}
             },
             new String [] {
-                "ID Cliente", "Estado", "Inicio Cola / Llamada", "Duracion Llamada"
+                "ID Cliente", "Estado", "Inicio Cola / Otro", "Duracion Llamada"
             }
         ));
         jScrollPane3.setViewportView(grillaCliente);
@@ -400,6 +400,11 @@ public class Principal extends javax.swing.JFrame {
         modelo1.addRow(fila);
         
         //Para la tabla de clientes
+        //Para mostrar reloj de los clientes
+        Object [] relojito = new Object[4];
+        relojito[0] = reloj;
+        modelo2.addRow(relojito);
+        
         //Clientes que estan siendo atendidos o llamando por telefono
         if(clientesTemporales.size() == 0)
         {
@@ -424,6 +429,7 @@ public class Principal extends javax.swing.JFrame {
         }
         
         //Clientes que estan esperando pagar
+        
         if(clientesAsignacion.size() == 0)
         {
             Object [] clientesImprimir = new Object[4];
@@ -431,7 +437,7 @@ public class Principal extends javax.swing.JFrame {
             clientesImprimir[1] = " - ";
             clientesImprimir[2] = " - ";
             clientesImprimir[3] = " - ";
-            modelo2.addRow(clientesImprimir);
+            //modelo2.addRow(clientesImprimir);
         }
         else
         {
@@ -454,7 +460,7 @@ public class Principal extends javax.swing.JFrame {
             clientesImprimir[1] = " - ";
             clientesImprimir[2] = " - ";
             clientesImprimir[3] = " - ";
-            modelo2.addRow(clientesImprimir);
+            //modelo2.addRow(clientesImprimir);
         }
         else
         {
@@ -469,60 +475,10 @@ public class Principal extends javax.swing.JFrame {
             }
         }
         
-        /*
-        //Borrar si no sirve
-        if(clientesCaja.size()!=0)
-        {
-            for(int i = 0; i < clientesCaja.size(); i++)
-            {
-                Object [] clientesImprimir = new Object[4];
-                
-                //Imprimir Reloj
-                if(i == 0)
-                {
-                    clientesImprimir[0] = reloj;
-                    clientesImprimir[1] = "";
-                    clientesImprimir[2] = "";
-                    clientesImprimir[3] = "";
-                    modelo2.addRow(clientesImprimir);
-                }
-
-                //Cada Cliente de ese tiempo
-                clientesImprimir = new Object[3];
-
-                Clientes c = (Clientes) clientesCaja.get(i);
-                clientesImprimir[0] = c.getId();
-                //clientesImprimir[1] = c.estado();
-                if(c.getHoraInicioLlamada() < 0)
-                {clientesImprimir[2] = " - ";}
-                else{clientesImprimir[2] = c.getHoraInicioLlamada();}
-                modelo2.addRow(clientesImprimir);
-                
-            }
-            
-            Object [] clientesImprimir = new Object[4];
-            clientesImprimir[0] = "";
-            clientesImprimir[1] = "";
-            clientesImprimir[2] = "";
-            clientesImprimir[3] = "";
-            modelo2.addRow(clientesImprimir);
-        }
-        else
-        {
-            Object [] clientesImprimir = new Object[4];
-            clientesImprimir[0] = reloj;
-            clientesImprimir[1] = "";
-            clientesImprimir[2] = "";
-            clientesImprimir[3] = "";
-            modelo2.addRow(clientesImprimir);
-            
-            clientesImprimir[0] = "";
-            clientesImprimir[1] = "";
-            clientesImprimir[2] = "";
-            clientesImprimir[3] = "";
-            modelo2.addRow(clientesImprimir);
-            
-        }*/
+        //Para agregar una fila en blanco para separar los distintos relojes
+        Object [] filaBlanco = new Object[4];
+        filaBlanco[0] = " ";
+        modelo2.addRow(filaBlanco);
     }
     
     //FALTA MODIFICAR
@@ -533,6 +489,7 @@ public class Principal extends javax.swing.JFrame {
         while(t<hasta)
         {
             Filas anterior = (Filas) simulacion.getFirst();
+            
             
             double llegada = anterior.getProxLlegadaCliente();
             double finAs = anterior.getFinAsignacionCabina();
@@ -594,11 +551,16 @@ public class Principal extends javax.swing.JFrame {
                 }
                 else
                 {
+                    
                     acuNoAtendidos = anterior.getAcuNoAtendidos()+1;
                     acuPerdida = anterior.getAcuPerdida()+0.50;
                     gananciaNeta = anterior.getAcuGanancia()-acuPerdida;
                     esperaCabina = false;
                     estadoEmpleado = anterior.getEstadoEmpleado();
+                    //Agregado el que no puede ser atendido
+                    llegado.setHoraInicioCola(reloj);
+                    llegado.setEstadoCliente(2);
+                    clientesTemporales.addLast(llegado);
                 }
                 colaCaja = anterior.getColaCliente();
                 acuAtendidos = anterior.getAcuAtendidos();
@@ -625,12 +587,15 @@ public class Principal extends javax.swing.JFrame {
                     
                     Clientes asignado = new Clientes(-1.0,-1);
                     
+                    int posicion = 0;
                     for (int i = 0; i < clientesTemporales.size(); i++) {
                         if(clientesTemporales.get(i).getEstadoCliente().equalsIgnoreCase("Siendo Asignado"))
                         {
+                            asignado.setId(clientesTemporales.get(i).getId());
                             asignado.setHoraInicioCola(reloj);
                             asignado.setEstadoCliente(4);
                             clientesTemporales.set(i, asignado);
+                            posicion = i;
                             break;
                         }
                     }
@@ -649,8 +614,8 @@ public class Principal extends javax.swing.JFrame {
                             cabina.setEstadoCabina(0, 1);
                             estadoCabina1 = cabina.getEstadoCabina(0);
                             estadoCabina2 = anterior.getEstadoCabina2();
-                            asignado.setDuracionLlamada(finLlamada1-reloj);
-                            
+                            asignado.setDuracionLlamada(this.truncador(finLlamada1-reloj));
+                            clientesTemporales.set(posicion, asignado);
                         }
                         else
                         {
@@ -661,7 +626,8 @@ public class Principal extends javax.swing.JFrame {
                             cabina.setEstadoCabina(1, 1);
                             estadoCabina2 = cabina.getEstadoCabina(0);
                             estadoCabina1 = anterior.getEstadoCabina1();
-                            asignado.setDuracionLlamada(finLlamada2-reloj);
+                            asignado.setDuracionLlamada(this.truncador(finLlamada2-reloj));
+                            clientesTemporales.set(posicion, asignado);
                         }
                     }    
                         
@@ -706,7 +672,7 @@ public class Principal extends javax.swing.JFrame {
                             empleado.setEstadoEmpleado(0);
                             estadoEmpleado = empleado.getEstadoEmpleado();
                             esperaCabina = false;
-                            colaCaja = anterior.getColaCliente();
+                            colaCaja = 0; //Cambio por las dudas sino va anterior
                             finAsignacionCabina = -1.0;
                             finCobro = -1.0;
                         }
@@ -761,7 +727,7 @@ public class Principal extends javax.swing.JFrame {
                         
                         //manejar empleado, cliente finalizado, fin cobro y cola maxima
                         
-                        if(anterior.getColaCliente()!=0)
+                        if(!anterior.getEstadoEmpleado().equalsIgnoreCase("Libre")) //Cambio, estaba en anterior.getColaCliente() != 0
                         {
                             //Empleado ocupado
                             colaCaja = anterior.getColaCliente() + 1;
@@ -773,7 +739,7 @@ public class Principal extends javax.swing.JFrame {
                             {
                                 colaMaxima = anterior.getColaMaxima();
                             }
-                            llamoEnC1.setHoraInicioLlamada(reloj);
+                            llamoEnC1.setHoraInicioCola(reloj);
                             llamoEnC1.setEstadoCliente(3);
                             clientesCaja.addLast(llamoEnC1);
                             clientesTemporales.remove(posicion);
@@ -783,9 +749,9 @@ public class Principal extends javax.swing.JFrame {
                         else
                         {
                             //Empleado libre
-                            empleado.setEstadoEmpleado(0);
+                            empleado.setEstadoEmpleado(1);
                             estadoEmpleado = empleado.getEstadoEmpleado();
-                            colaCaja = anterior.getColaCliente();
+                            colaCaja = 0; //estaba en anterior
                             colaMaxima = anterior.getColaMaxima();
                             llamoEnC1.setEstadoCliente(5);
                             clientesTemporales.set((int)posicion, llamoEnC1);
@@ -794,7 +760,7 @@ public class Principal extends javax.swing.JFrame {
                         
                         acuAtendidos = anterior.getAcuAtendidos();
                         acuNoAtendidos = anterior.getAcuNoAtendidos();
-                        acuTiempoLlamada = anterior.getTiempoLlamada();
+                        acuTiempoLlamada = anterior.getAcuTiempoLlamada();
                         acuGanancia = anterior.getAcuGanancia();
                         acuPerdida = anterior.getAcuPerdida();
                         gananciaNeta = anterior.getGananciaNeta();
@@ -839,7 +805,7 @@ public class Principal extends javax.swing.JFrame {
                             esperaCabina = anterior.isEsperaCabina();
                             
                             //manejar empleado, cliente finalizado, fin cobro y cola maxima
-                            if(anterior.getColaCliente()!=0)
+                            if(!anterior.getEstadoEmpleado().equalsIgnoreCase("Libre")) //Igual q en C1
                             {
                                 //Empleado ocupado
                                 colaCaja = anterior.getColaCliente() + 1;
@@ -851,7 +817,7 @@ public class Principal extends javax.swing.JFrame {
                                 {
                                     colaMaxima = anterior.getColaMaxima();
                                 }
-                                llamoEnC2.setHoraInicioLlamada(reloj);
+                                llamoEnC2.setHoraInicioCola(reloj);
                                 llamoEnC2.setEstadoCliente(3);
                                 clientesCaja.addLast(llamoEnC2);
                                 clientesTemporales.remove(posicion);
@@ -861,7 +827,7 @@ public class Principal extends javax.swing.JFrame {
                             else
                             {
                                 //Empleado libre
-                                empleado.setEstadoEmpleado(0);
+                                empleado.setEstadoEmpleado(1);
                                 estadoEmpleado = empleado.getEstadoEmpleado();
                                 colaCaja = anterior.getColaCliente();
                                 colaMaxima = anterior.getColaMaxima();
@@ -872,7 +838,7 @@ public class Principal extends javax.swing.JFrame {
                         
                             acuAtendidos = anterior.getAcuAtendidos();
                             acuNoAtendidos = anterior.getAcuNoAtendidos();
-                            acuTiempoLlamada = anterior.getTiempoLlamada();
+                            acuTiempoLlamada = anterior.getAcuTiempoLlamada();
                             acuGanancia = anterior.getAcuGanancia();
                             acuPerdida = anterior.getAcuPerdida();
                             gananciaNeta = anterior.getGananciaNeta();
@@ -896,7 +862,7 @@ public class Principal extends javax.swing.JFrame {
                                 finLlamada2 = anterior.getFinLlamada2();
                                 estadoCabina1 = anterior.getEstadoCabina1();
                                 estadoCabina2 = anterior.getEstadoCabina2();
-                                colaCaja = anterior.getColaCliente();
+                                //colaCaja = anterior.getColaCliente();
                                 clientesCabina = anterior.getClientesEsperandoAsignacion();
                                 clientesCaja = anterior.getClientesCaja();
                                 clientesTemporales = anterior.getClientesTemporales();
@@ -914,18 +880,20 @@ public class Principal extends javax.swing.JFrame {
                                 acuAtendidos = anterior.getAcuAtendidos() +1;
                                 acuNoAtendidos = anterior.getAcuNoAtendidos();
                                 colaMaxima = anterior.getColaMaxima();
-                                acuTiempoLlamada = anterior.getAcuTiempoLlamada()+pagando.getDuracionLlamada();
-                                acuGanancia = cabina.calcularCostoLlamada(pagando.getDuracionLlamada()); //Llamar metodo cobro
+                                acuTiempoLlamada = this.truncador(anterior.getAcuTiempoLlamada()+pagando.getDuracionLlamada());
+                                acuGanancia = anterior.getAcuGanancia() + this.truncador(cabina.calcularCostoLlamada(pagando.getDuracionLlamada())); //Llamar metodo cobro
                                 acuPerdida = anterior.getAcuPerdida();
-                                gananciaNeta = acuGanancia - acuPerdida;
+                                gananciaNeta = (acuGanancia - acuPerdida);
                                 //finTiempo cobro
                                 //Depende de cola cabina
-                                esperaCabina = anterior.isEsperaCabina();
+                                //esperaCabina = anterior.isEsperaCabina();
                                 Clientes esperaCab = new Clientes(-1.0,0);
                                 
-                                if(esperaCabina == true)
+                                if(anterior.isEsperaCabina() == true)
                                 {
                                     esperaCab = clientesCabina.removeFirst();
+                                    esperaCab.setEstadoCliente(0);
+                                    esperaCab.setHoraInicioCola(reloj);
                                     clientesTemporales.addLast(esperaCab);
                                     empleado.setEstadoEmpleado(2);
                                     estadoEmpleado = empleado.getEstadoEmpleado();
@@ -942,15 +910,17 @@ public class Principal extends javax.swing.JFrame {
                                 }
                                 else
                                 {
-                                    if(colaCaja != 0)
+                                    if(anterior.getColaCliente() != 0)
                                     {
                                         //Hay clientes para pagar
                                         Clientes porPagar = new Clientes(-1.0,0);
                                         porPagar = clientesCaja.removeFirst();
+                                        porPagar.setEstadoCliente(5);
+                                        porPagar.setHoraInicioCola(reloj);
                                         clientesTemporales.addLast(porPagar);
                                         empleado.setEstadoEmpleado(1);
                                         estadoEmpleado = empleado.getEstadoEmpleado();
-                                        colaCaja = colaCaja -1;
+                                        colaCaja = (anterior.getColaCliente() -1);
                                         finAsignacionCabina = -1.0;
                                         finCobro = cabina.calcularFinCobro(reloj);
                                     }
@@ -976,7 +946,8 @@ public class Principal extends javax.swing.JFrame {
             ganancia = this.truncador(acuGanancia);
             gananciaTotal = this.truncador(gananciaNeta);
             
-            Filas nueva = new Filas(evento,  reloj,  rndCliente,  tiempoEntreLlegada,  proxLlegadaCliente,  finAsignacionCabina,  rndLlamada, tiempoLlamada, inicioLlamadaC1, finLlamada1, inicioLlamadaC2, finLlamada2,  finCobro,  estadoCabina1,  estadoCabina2,  estadoEmpleado, esperaCabina, colaCaja, acuAtendidos, acuNoAtendidos, colaMaxima, acuTiempoLlamada, acuGanancia,  acuPerdida,  gananciaNeta, clientesTemporales,  clientesCaja, clientesCabina);
+            
+            Filas nueva = new Filas(evento,  reloj,  rndCliente,  tiempoEntreLlegada,  proxLlegadaCliente,  finAsignacionCabina,  rndLlamada, tiempoLlamada, inicioLlamadaC1, finLlamada1, inicioLlamadaC2, finLlamada2,  finCobro,  estadoCabina1,  estadoCabina2,  estadoEmpleado, esperaCabina, colaCaja, acuAtendidos, acuNoAtendidos, colaMaxima, this.truncador(acuTiempoLlamada), this.truncador(acuGanancia),  this.truncador(acuPerdida),  this.truncador(gananciaNeta), clientesTemporales,  clientesCaja, clientesCabina);
             if(desde == 0)
             {
                 if(t >= desde && t <hasta)
@@ -991,6 +962,15 @@ public class Principal extends javax.swing.JFrame {
                     this.imprimirFila(evento,  reloj,  rndCliente,  tiempoEntreLlegada,  proxLlegadaCliente,  finAsignacionCabina,  rndLlamada, tiempoLlamada, inicioLlamadaC1, finLlamada1, inicioLlamadaC2, finLlamada2,  finCobro,  estadoCabina1,  estadoCabina2,  estadoEmpleado,  esperaCabina, colaCaja,  acuAtendidos,  acuNoAtendidos, colaMaxima, acuTiempoLlamada,  acuGanancia,  acuPerdida, gananciaNeta, clientesTemporales,clientesCaja, clientesCabina);
                 }
             }
+            
+            for (int i = 0; i < clientesTemporales.size(); i++) {
+                if(clientesTemporales.get(i).getEstadoCliente().equalsIgnoreCase("Abandono"))
+                {
+                    clientesTemporales.remove(i);
+                    break;
+                }
+            }
+            nueva.setClientesTemporales(clientesTemporales); //Borra los abandonados
             simulacion.addLast(nueva);
             if(simulacion.size()==2)
             {
@@ -999,6 +979,7 @@ public class Principal extends javax.swing.JFrame {
             
             t++;
         }
+        numeroCliente = 0;
     }
     
     public double truncador(double valorATruncar)
