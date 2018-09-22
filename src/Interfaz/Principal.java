@@ -323,16 +323,16 @@ public class Principal extends javax.swing.JFrame {
         
         //Simulacion
         inicializacion = new Filas(evento,  reloj,  rndCliente,  tiempoEntreLlegada,  proxLlegadaCliente,  finAsignacionCabina,  rndLlamada, tiempoLlamada, inicioLlamadaC1, finLlamada1, inicioLlamadaC2, finLlamada2,  finCobro,  estadoCabina1,  estadoCabina2,  estadoEmpleado, esperaCabina, colaCaja, acuAtendidos, acuNoAtendidos, colaMaxima, acuTiempoLlamada, acuGanancia,  acuPerdida,  gananciaNeta, clientesTemporales,  clientesCaja, clientesCabina);
-        simulacion.add(inicializacion);
-        
+        simulacion.add(inicializacion); //Primera fila en ejecucion
+        //Si hay que mostrar o no la fila de iniciacion
         if(mostrarDesde == 0)
         {
             this.imprimirFila(evento,  reloj,  rndCliente,  tiempoEntreLlegada,  proxLlegadaCliente,  finAsignacionCabina,  rndLlamada, tiempoLlamada, inicioLlamadaC1, finLlamada1, inicioLlamadaC2, finLlamada2,  finCobro,  estadoCabina1,  estadoCabina2,  estadoEmpleado,  esperaCabina, colaCaja,  acuAtendidos,  acuNoAtendidos, colaMaxima, acuTiempoLlamada,  acuGanancia,  acuPerdida, gananciaNeta, clientesTemporales,clientesCaja, clientesCabina);
         }
-        simular(mostrarDesde, mostrarHasta);
+        simular(mostrarDesde, mostrarHasta); //Metodo para empezar a simular a partir de la primera fila
     }
     
-    //FALTA MODIFICAR
+    //Para imprimir cada fila con sus respectivos clientes
     public void imprimirFila(String evento, double reloj, double rndCliente, double tiempoEntreLlegada, double proxLlegadaCliente, double finAsignacionCabina, double rndLlamada, double tiempoLlamada, double inicioLlamadaC1, double finLlamada1, double inicioLlamadaC2, double finLlamada2, double finCobro, String estadoCabina1, String estadoCabina2, String estadoEmpleado, boolean esperaCabina, long colaCaja, double acuAtendidos, double acuNoAtendidos, long colaMaxima, double acuTiempoLlamada, double acuGanancia, double acuPerdida, double gananciaNeta, LinkedList<Clientes> clientesTemporales, LinkedList<Clientes> clientesCaja, LinkedList<Clientes> clientesAsignacion){
      
         Object[] fila = new Object[25];
@@ -489,7 +489,7 @@ public class Principal extends javax.swing.JFrame {
         while(t<hasta)
         {
             Filas anterior = (Filas) simulacion.getFirst();
-            
+            //Aca toma la fila anterior
             
             double llegada = anterior.getProxLlegadaCliente();
             double finAs = anterior.getFinAsignacionCabina();
@@ -948,7 +948,7 @@ public class Principal extends javax.swing.JFrame {
             ganancia = this.truncador(acuGanancia);
             gananciaTotal = this.truncador(gananciaNeta);
             
-            
+            //Simulacion actual es Filas nueva, imprime en pantalla la fila actual
             Filas nueva = new Filas(evento,  reloj,  rndCliente,  tiempoEntreLlegada,  proxLlegadaCliente,  finAsignacionCabina,  rndLlamada, tiempoLlamada, inicioLlamadaC1, finLlamada1, inicioLlamadaC2, finLlamada2,  finCobro,  estadoCabina1,  estadoCabina2,  estadoEmpleado, esperaCabina, colaCaja, acuAtendidos, acuNoAtendidos, colaMaxima, this.truncador(acuTiempoLlamada), this.truncador(acuGanancia),  this.truncador(acuPerdida),  this.truncador(gananciaNeta), clientesTemporales,  clientesCaja, clientesCabina);
             if(desde == 0)
             {
@@ -973,17 +973,17 @@ public class Principal extends javax.swing.JFrame {
                 }
             }
             nueva.setClientesTemporales(clientesTemporales); //Borra los abandonados
-            simulacion.addLast(nueva);
+            simulacion.addLast(nueva); //Esta es la cola de filas en tiempo de ejecucion, aca agrega la nueva fila de esta simulacion
             if(simulacion.size()==2)
             {
-                simulacion.removeFirst();
+                simulacion.removeFirst(); //Aca borra la fila anterior dejando solo la nueva
             }
             
             t++;
         }
         numeroCliente = 0;
     }
-    
+    //Para hacer numeros con dos decimales nomas
     public double truncador(double valorATruncar)
     {
         Double aTruncar = valorATruncar;
