@@ -497,6 +497,11 @@ public class Principal extends javax.swing.JFrame {
             double finC2 = anterior.getFinLlamada2();
             double cobro = anterior.getFinCobro();
             
+            System.out.println("reloj: "+anterior.getReloj());
+            System.out.println("cola temporal: "+anterior.getClientesTemporales().size());
+            System.out.println("cola caja: "+anterior.getClientesCaja().size());
+            System.out.println("cola asign: "+anterior.getClientesEsperandoAsignacion().size());
+            
             if((llegada<finAs || finAs <0)&& (llegada < finC1 || finC1 <0) && (llegada < finC2 || finC2 < 0) && (llegada < cobro || cobro < 0))
             {
                 //Llega cliente
@@ -521,7 +526,7 @@ public class Principal extends javax.swing.JFrame {
                 clientesCaja = anterior.getClientesCaja();
                 clientesTemporales = anterior.getClientesTemporales();
                 numeroCliente++;
-                if(((cabina.getEstadoCabina(0).equalsIgnoreCase("Libre") && cabina.getEstadoCabina(1).equalsIgnoreCase("Libre")) && clientesCabina.size()<=1 ) || ((cabina.getEstadoCabina(0).equalsIgnoreCase("Libre") || cabina.getEstadoCabina(1).equalsIgnoreCase("Libre")) && clientesCabina.size()==0))
+                if(((cabina.getEstadoCabina(0).equalsIgnoreCase("Libre") && cabina.getEstadoCabina(1).equalsIgnoreCase("Libre")) && clientesCabina.size()<=1 ) || ((cabina.getEstadoCabina(0).equalsIgnoreCase("Libre") || cabina.getEstadoCabina(1).equalsIgnoreCase("Libre")) && clientesCabina.size()==0))//Cambio clientesCabina.size
                 {
                     
                     if(empleado.getEstadoEmpleado().equalsIgnoreCase("Libre"))
@@ -571,7 +576,7 @@ public class Principal extends javax.swing.JFrame {
             }
             else
             {
-                if((finAs < finC1 || finC1<0) && (finAs < finC2 || finC2 < 0)&& (finAs < cobro || cobro < 0) && (finAs < llegada || llegada < 0) && (finAs >0))
+                if((finAs < finC1 || finC1<0) && (finAs < finC2 || finC2 < 0)&& (finAs < cobro || cobro < 0) && (finAs >0))
                 {
                     //Asignando
                     evento = "Fin Asignacion";
@@ -600,12 +605,14 @@ public class Principal extends javax.swing.JFrame {
                         }
                     }
                     
-                    if(cabina.getEstadoCabina(0).equalsIgnoreCase("Libre") || cabina.getEstadoCabina(1).equalsIgnoreCase("Libre"))
+                    //if(cabina.getEstadoCabina(0).equalsIgnoreCase("Libre") || cabina.getEstadoCabina(1).equalsIgnoreCase("Libre"))
+                    if(anterior.getEstadoCabina1().equalsIgnoreCase("Libre")||anterior.getEstadoCabina2().equalsIgnoreCase("Libre"))
                     {
                         rndLlamada = cabina.aleatorio();
                         tiempoLlamada = cabina.calcularTiempoLlamada(rndLlamada);
                         
-                        if(cabina.getEstadoCabina(0).equalsIgnoreCase("Libre"))
+                        //if(cabina.getEstadoCabina(0).equalsIgnoreCase("Libre"))
+                        if(anterior.getEstadoCabina1().equalsIgnoreCase("Libre"))
                         {
                             inicioLlamadaC1 = reloj;
                             finLlamada1 = cabina.calcularFinLlamada(tiempoLlamada, reloj);
@@ -688,7 +695,7 @@ public class Principal extends javax.swing.JFrame {
                 }
                 else
                 {
-                    if((finC1 < finC2 || finC2 <0)&& (finC1 < cobro || cobro<0) && (finC1 < finAs || finAs < 0) && (finC1 < llegada || llegada <0) && (finC1>0))
+                    if((finC1 < finC2 || finC2 <0)&& (finC1 < cobro || cobro<0) && (finC1>0))
                     {
                         //Fin llamada C1
                         evento = "Fin Llamada C1";
@@ -768,7 +775,7 @@ public class Principal extends javax.swing.JFrame {
                     }
                     else
                     {
-                        if((finC2 < cobro || cobro<0)&&(finC2 < finC1 || finC1 < 0) && (finC2 < finAs || finAs<0)&&(finC2 < llegada || llegada<0) && (finC2 >0))
+                        if((finC2 < cobro || cobro<0) && (finC2 >0))
                         {
                             //Fin llamada C2
                             evento = "Fin Llamada C2";
@@ -847,7 +854,7 @@ public class Principal extends javax.swing.JFrame {
                         }
                         else
                         {
-                            if((cobro<finC2 || finC2 <0) && (cobro < finC1 || finC1 < 0) && (cobro < finAs || finAs < 0) && (cobro < llegada || llegada < 0) && (cobro > 0))
+                            if((cobro > 0))
                             {
                                //Fin Cobro
                                 evento = "Fin Cobro";

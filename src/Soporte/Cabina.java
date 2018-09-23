@@ -53,7 +53,7 @@ public class Cabina {
 
     // TIEMPO DE COBRO ES 0,25MIN SIEMPRE. MODIFICAR ACA PARA CAMBIAR EL VALOR
     public double calcularFinCobro(double horaActual) {
-        Double tiempo = horaActual + 0.25;
+        Double tiempo = horaActual + 10.25;
         tiempo = tiempo * 100;
         int devolver = tiempo.intValue();
         tiempo = devolver / 100.0;
