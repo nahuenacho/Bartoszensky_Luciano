@@ -526,7 +526,156 @@ public class Principal extends javax.swing.JFrame {
                 clientesCaja = anterior.getClientesCaja();
                 clientesTemporales = anterior.getClientesTemporales();
                 numeroCliente++;
-                if(((cabina.getEstadoCabina(0).equalsIgnoreCase("Libre") && cabina.getEstadoCabina(1).equalsIgnoreCase("Libre")) && clientesCabina.size()<=1 ) || ((cabina.getEstadoCabina(0).equalsIgnoreCase("Libre") || cabina.getEstadoCabina(1).equalsIgnoreCase("Libre")) && clientesCabina.size()==0))//Cambio clientesCabina.size
+                
+                if(anterior.getEstadoEmpleado().equalsIgnoreCase("Libre"))
+                {
+                    //Empleado Libre
+                    finCobro = -1.0; //Supone que si va a asignar no puede cobrar
+                    if(anterior.getEstadoCabina1().equalsIgnoreCase("Libre") || anterior.getEstadoCabina2().equalsIgnoreCase("Libre"))
+                    {
+                        finAsignacionCabina = cabina.calcularFinAsignacionCabina(reloj);
+                        empleado.setEstadoEmpleado(2);
+                        estadoEmpleado = empleado.getEstadoEmpleado();
+                        esperaCabina = false;
+
+                        llegado.setHoraInicioCola(reloj);
+                        llegado.setEstadoCliente(0);
+                        clientesTemporales.addLast(llegado);
+                        
+                        acuPerdida = anterior.getAcuPerdida();
+                        gananciaNeta = anterior.getGananciaNeta();
+                        acuNoAtendidos = anterior.getAcuNoAtendidos();
+                        
+                    }
+                    else
+                    {
+                        //Se va
+                        acuNoAtendidos = anterior.getAcuNoAtendidos()+1;
+                        acuPerdida = anterior.getAcuPerdida()+0.50;
+                        gananciaNeta = anterior.getAcuGanancia()-acuPerdida;
+                        //esperaCabina = false;
+                        estadoEmpleado = anterior.getEstadoEmpleado();
+                        //Agregado el que no puede ser atendido
+                        llegado.setHoraInicioCola(reloj);
+                        llegado.setEstadoCliente(2);
+                        clientesTemporales.addLast(llegado);
+                        esperaCabina = anterior.isEsperaCabina();
+                    }
+                }else
+                {
+                    //Empleado Asignando
+                    if(anterior.getEstadoEmpleado().equalsIgnoreCase("Ocupado Asignando"))
+                    {
+                        finAsignacionCabina = anterior.getFinAsignacionCabina();
+                        estadoEmpleado = anterior.getEstadoEmpleado();
+                        finCobro = -1.0; //Supone que no puede estar cobrando
+                        if(anterior.getEstadoCabina1().equalsIgnoreCase("Libre") && anterior.getEstadoCabina2().equalsIgnoreCase("Libre") && clientesCabina.isEmpty())
+                        {
+                            //Lo va a meter en esperando asignacion
+                            esperaCabina = true;
+                            llegado.setHoraInicioCola(reloj);
+                            llegado.setEstadoCliente(1);
+                            clientesCabina.addLast(llegado);
+                            acuPerdida = anterior.getAcuPerdida();
+                            gananciaNeta = anterior.getGananciaNeta();
+                            acuNoAtendidos = anterior.getAcuNoAtendidos();
+                        }
+                        else
+                        {
+                            if(anterior.getEstadoCabina1().equalsIgnoreCase("Libre") && anterior.getEstadoCabina2().equalsIgnoreCase("Libre") && !clientesCabina.isEmpty())
+                            {
+                                //Se va el cliente
+                                esperaCabina = anterior.isEsperaCabina();
+                                llegado.setHoraInicioCola(reloj);
+                                llegado.setEstadoCliente(2);
+                                clientesTemporales.addLast(llegado);
+                                acuNoAtendidos = anterior.getAcuNoAtendidos()+1;
+                                acuPerdida = anterior.getAcuPerdida()+0.50;
+                                gananciaNeta = anterior.getAcuGanancia()-acuPerdida;
+                            }
+                            else
+                            {
+                                if(anterior.getEstadoCabina1().equalsIgnoreCase("Libre") || anterior.getEstadoCabina2().equalsIgnoreCase("Libre"))
+                                {
+                                    //Se va el cliente
+                                    esperaCabina = anterior.isEsperaCabina();
+                                    llegado.setHoraInicioCola(reloj);
+                                    llegado.setEstadoCliente(2);
+                                    clientesTemporales.addLast(llegado);
+                                    acuNoAtendidos = anterior.getAcuNoAtendidos()+1;
+                                    acuPerdida = anterior.getAcuPerdida()+0.50;
+                                    gananciaNeta = anterior.getAcuGanancia()-acuPerdida;
+                                }
+                            }
+                        }
+                    }
+                    else
+                    {
+                        //Cobrando
+                        if(anterior.getEstadoEmpleado().equalsIgnoreCase("Ocupado Cobrando"))
+                        {
+                            finAsignacionCabina = -1.0; //Supone que no puede estar asignando
+                            finCobro = anterior.getFinCobro();
+                            estadoEmpleado = anterior.getEstadoEmpleado();
+                            if(anterior.getEstadoCabina1().equalsIgnoreCase("Libre") && anterior.getEstadoCabina2().equalsIgnoreCase("Libre") && clientesCabina.size() <=1)
+                            {
+                                //Lo mete en la cola de esperando asignacion
+                                esperaCabina = true;
+                                llegado.setHoraInicioCola(reloj);
+                                llegado.setEstadoCliente(1);
+                                clientesCabina.addLast(llegado);
+                                acuPerdida = anterior.getAcuPerdida();
+                                gananciaNeta = anterior.getGananciaNeta();
+                                acuNoAtendidos = anterior.getAcuNoAtendidos();
+                                
+                            }
+                            else
+                            {
+                                if(anterior.getEstadoCabina1().equalsIgnoreCase("Libre") && anterior.getEstadoCabina2().equalsIgnoreCase("Libre") && clientesCabina.size() >1)
+                                {
+                                    //Se tiene que ir
+                                    esperaCabina = anterior.isEsperaCabina();
+                                    llegado.setHoraInicioCola(reloj);
+                                    llegado.setEstadoCliente(2);
+                                    clientesTemporales.addLast(llegado);
+                                    acuNoAtendidos = anterior.getAcuNoAtendidos()+1;
+                                    acuPerdida = anterior.getAcuPerdida()+0.50;
+                                    gananciaNeta = anterior.getAcuGanancia()-acuPerdida;
+                                }
+                                else
+                                {
+                                    if(anterior.getEstadoCabina1().equalsIgnoreCase("Libre") || anterior.getEstadoCabina2().equalsIgnoreCase("Libre") && clientesCabina.isEmpty())
+                                    {
+                                        //Entra en la cola esperando asignacion
+                                        esperaCabina = true;
+                                        llegado.setHoraInicioCola(reloj);
+                                        llegado.setEstadoCliente(1);
+                                        clientesCabina.addLast(llegado);
+                                        acuPerdida = anterior.getAcuPerdida();
+                                        gananciaNeta = anterior.getGananciaNeta();
+                                        acuNoAtendidos = anterior.getAcuNoAtendidos();
+                                    }
+                                    else
+                                    {
+                                        if(anterior.getEstadoCabina1().equalsIgnoreCase("Libre") || anterior.getEstadoCabina2().equalsIgnoreCase("Libre") && !clientesCabina.isEmpty())
+                                        {
+                                            //Se tiene que ir
+                                            esperaCabina = anterior.isEsperaCabina();
+                                            llegado.setHoraInicioCola(reloj);
+                                            llegado.setEstadoCliente(2);
+                                            clientesTemporales.addLast(llegado);
+                                            acuNoAtendidos = anterior.getAcuNoAtendidos()+1;
+                                            acuPerdida = anterior.getAcuPerdida()+0.50;
+                                            gananciaNeta = anterior.getAcuGanancia()-acuPerdida;
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+                
+                /*if(((cabina.getEstadoCabina(0).equalsIgnoreCase("Libre") && cabina.getEstadoCabina(1).equalsIgnoreCase("Libre")) && clientesCabina.size()<=1 ) || ((cabina.getEstadoCabina(0).equalsIgnoreCase("Libre") || cabina.getEstadoCabina(1).equalsIgnoreCase("Libre")) && clientesCabina.size()==0))//Cambio clientesCabina.size
                 {
                     
                     if(empleado.getEstadoEmpleado().equalsIgnoreCase("Libre"))
@@ -566,7 +715,7 @@ public class Principal extends javax.swing.JFrame {
                     llegado.setEstadoCliente(2);
                     clientesTemporales.addLast(llegado);
                     esperaCabina = anterior.isEsperaCabina();
-                }
+                }*/
                 colaCaja = anterior.getColaCliente();
                 acuAtendidos = anterior.getAcuAtendidos();
                 colaMaxima = anterior.getColaMaxima();
@@ -734,6 +883,8 @@ public class Principal extends javax.swing.JFrame {
                         esperaCabina = anterior.isEsperaCabina();
                         
                         //manejar empleado, cliente finalizado, fin cobro y cola maxima
+                        
+                        
                         
                         if(!anterior.getEstadoEmpleado().equalsIgnoreCase("Libre")) //Cambio, estaba en anterior.getColaCliente() != 0
                         {
