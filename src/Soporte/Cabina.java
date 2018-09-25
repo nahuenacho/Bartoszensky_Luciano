@@ -4,7 +4,6 @@ public class Cabina {
 
     private String c[];
     private Estado estado;
-    //private String estadoCabina;
 
     public Cabina() {
         c = new String[2];
@@ -41,7 +40,7 @@ public class Cabina {
         return devolver;
     }
 
-    // Uniforme[3,7]. MODIFICAR ACA PARA CAMBIAR EL VALOR DE LA DISTRIBUCION
+    // UNIFORME [3,7]. MODIFICAR ACA PARA CAMBIAR EL VALOR DE LA DISTRIBUCION
     public double calcularTiempoLlamada(double random) {
         Double tiempo = 0.0;
         tiempo = (3.0 + (random * (7.0 - 3.0)));
@@ -53,13 +52,13 @@ public class Cabina {
 
     // TIEMPO DE COBRO ES 0,25MIN SIEMPRE. MODIFICAR ACA PARA CAMBIAR EL VALOR
     public double calcularFinCobro(double horaActual) {
-        Double tiempo = horaActual + 10.25;
+        Double tiempo = horaActual + 0.25;
         tiempo = tiempo * 100;
         int devolver = tiempo.intValue();
         tiempo = devolver / 100.0;
         return tiempo;
     }
-
+    
     public double calcularFinAsignacionCabina(double horaActual) {
         Double tiempo = horaActual + 0.16;
         tiempo = tiempo * 100;
@@ -102,14 +101,7 @@ public class Cabina {
             
         }
     }
-    /*public Estado getEstado() {
-        return estado;
-    }
-
-    public void setEstado(Estado estado) {
-        this.estado = estado;
-    }*/
-
+   
     public String getEstadoCabina(int nroCabina) {
         return c[nroCabina];
     }
@@ -117,6 +109,4 @@ public class Cabina {
     public void setEstadoCabina(int nroCabina, int nroEstado) {
         c[nroCabina] = estado.estado(0, nroEstado);
     }
-
-
 }

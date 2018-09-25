@@ -17,17 +17,7 @@ public class Clientes {
         this.horaInicioCola = 0.0;
         this.duracionLlamada = 0.0;
     }
-    /*
-    public String estado()
-    {
-        return estadoCliente;
-    }
-    
-    public void setEstado(int i)
-    {
-        estadoCliente = estado.estado(1, i);
-    }*/
-
+   
     public double getHoraInicioLlamada() {
         return horaInicioLlamada;
     }

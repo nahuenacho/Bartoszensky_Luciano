@@ -264,7 +264,5 @@ public class Filas {
 
     public void setClientesEsperandoAsignacion(LinkedList<Clientes> clientesEsperandoAsignacion) {
         this.clientesEsperandoAsignacion = clientesEsperandoAsignacion;
-    }
-    
-    
+    }    
 }
